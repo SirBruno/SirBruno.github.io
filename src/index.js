@@ -6,7 +6,7 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import Home from './Containers/Home/Home'
 import Post from './Containers/Post/Post'
 
-const uri = 'http://archetypeofficial.herokuapp.com/graphql';
+const uri = 'https://archetypeofficial.herokuapp.com/graphql';
 const client = new ApolloClient({ uri });
 
 
