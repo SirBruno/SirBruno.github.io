@@ -3,7 +3,7 @@ import { Button } from '@material-ui/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import GET_POSTS from '../Queries/GET_DATA'
 import gql from 'graphql-tag';
-import './Books.styles.css';
+import './Posts.styles.css';
 import AddPost from './AddPost';
 
 export default function Posts(props) {
