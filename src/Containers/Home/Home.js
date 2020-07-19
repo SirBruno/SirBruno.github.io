@@ -1,10 +1,10 @@
 import React from 'react';
-import Books from '../../Components/Books';
+import Posts from '../../Components/Posts';
 
 export default function Home() {
     return (
       <div className="Home">
-          <Books />
+          <Posts />
       </div>
     )
 }
