@@ -5,8 +5,9 @@ body {
 .bookContainer {
   margin: 7px;
   box-shadow: 0 0 10px rgba(0, 0, 0, .25);
-  padding: 18px;
+  padding: 28px;
   border-radius: 3px;
+  overflow: hidden;
 }
 
 .booksOuter {
@@ -17,4 +18,56 @@ body {
 #postTitle {
   font-size: 24px;
   font-weight: bold;
+  text-decoration: none;
+  color: #000;
+  text-transform: capitalize;
+}
+
+#postTitle:after {
+  content: '';
+  width: 0;
+  height: 3px;
+  position: relative;
+  background-image: linear-gradient(to right, #000, #fff);
+  display: block;
+  bottom: 0;
+  transition: .2s;
+}
+
+#postTitle:hover:after {
+  width: 50%;
+  transition: .2s;
+}
+
+img {
+  position: relative;
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+#deleteBtn {
+  background: #eee;
+  color: #aaa;
+  margin-left: 10px;
+  float: right;
+  right: -50px !important;
+  top: -50px !important;
+  border-radius: 100px !important;
+  height: 85px;
+  width: 85px;
+  position: relative;
+  overflow: hidden;
+}
+
+#deleteBtn:hover {
+  background: rgb(0, 0, 0);
+  color: #fff;
+}
+
+.MuiButton-label {
+  position: relative;
+  right: 7px;
+  top: 7px;
+  font-size: 18px;
 }

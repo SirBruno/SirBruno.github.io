@@ -11,6 +11,7 @@ export default function Single() {
   const dataTitle = React.createRef();
   const dataAuthor = React.createRef();
   const dataDescription = React.createRef();
+  const dataPostImageURL = React.createRef();
 
   useEffect(() => {
 
@@ -24,6 +25,7 @@ export default function Single() {
               postTitle
               postBody
               author
+              postImageURL
             }
           }
       `,
@@ -48,7 +50,8 @@ export default function Single() {
         _id,
         postTitle: dataTitle.current.value,
         postBody: dataDescription.current.value,
-        author: dataAuthor.current.value
+        author: dataAuthor.current.value,
+        postImageURL: dataPostImageURL.current.value
       },
       mutation: gql`
         mutation updatePost(
@@ -56,17 +59,20 @@ export default function Single() {
           $postTitle: String,
           $author: String,
           $postBody: String
+          $postImageURL: String
         ){
           updatePost(
             _id: $_id,
             postTitle: $postTitle,
             author: $author,
             postBody: $postBody
+            postImageURL: $postImageURL
           ) {
             id
             postTitle
             postBody
             author
+            postImageURL
           }
         }
     `,
@@ -90,6 +96,8 @@ export default function Single() {
       <input ref={dataAuthor} defaultValue={ post.author } />
       <br />
       <input ref={dataDescription} defaultValue={ post.postBody } />
+      <br />
+      <input ref={dataPostImageURL} defaultValue={ post.postImageURL } />
       <br />
       <button onClick={() => updatePost(post.id)}>Submit</button>
       <br />

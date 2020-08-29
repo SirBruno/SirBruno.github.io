@@ -13,6 +13,7 @@ const GET_POSTS = gql`
       postTitle
       postBody
       cursor
+      postImageURL
     }
   }
 }

@@ -5,6 +5,7 @@ import GET_POSTS from '../Queries/GET_DATA'
 import gql from 'graphql-tag';
 import './Posts.styles.css';
 import AddPost from './AddPost';
+import imgPlaceholder from '../assets/image-placeholder.jpg'
 
 export default function Posts(props) {
 
@@ -35,21 +36,19 @@ export default function Posts(props) {
 	if (loading) {
 		return <p>Loading...</p>
 	} else if (posts.length > 0) {
-		console.log('lel');
 		return (
 			<div>
 				<AddPost posts={ posts } setPosts={ setPosts } />
 				<div className="booksOuter">
 					{posts.map(posts =>
 						<div key={posts.id} className="bookContainer">
-							<p id="postTitle">{ posts.postTitle }</p>
-							<p>{ posts.postBody }</p>
-							<a href={`/post/${posts.id}`} style={{ display: "inline", fontWeight: "bold", fontSize: "20px" }}>{posts.id}</a>
-							<Button onClick={() => deletePost(posts.id)} style={{
-								background: "#000",
-								color: "#fff",
+							<Button id="deleteBtn" onClick={() => deletePost(posts.id)} style={{
 								marginLeft: 10
 							}}>X</Button>
+							<a id="postTitle" href={`/post/${posts.id}`}>{ posts.postTitle }</a>
+							<p>{ posts.postBody }</p>
+							<img src={ posts.postImageURL ? posts.postImageURL : imgPlaceholder } alt="no img found" />
+							<p>{ posts.id }</p>
 						</div>
 					)}
 				</div>
