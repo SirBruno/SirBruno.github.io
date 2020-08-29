@@ -2,7 +2,10 @@ import gql from 'graphql-tag';
 
 const GET_POSTS = gql`
 {
-  posts (pageSize: 8) {
+  posts (
+    pageSize: 8,
+    # after: "2"
+  ) {
     hasMore
     cursor
     posts {

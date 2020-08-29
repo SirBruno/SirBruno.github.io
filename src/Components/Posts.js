@@ -42,7 +42,7 @@ export default function Posts(props) {
 				<div className="booksOuter">
 					{posts.map(posts =>
 						<div key={posts.id} className="bookContainer">
-							<p>{ posts.postTitle }</p>
+							<p id="postTitle">{ posts.postTitle }</p>
 							<p>{ posts.postBody }</p>
 							<a href={`/post/${posts.id}`} style={{ display: "inline", fontWeight: "bold", fontSize: "20px" }}>{posts.id}</a>
 							<Button onClick={() => deletePost(posts.id)} style={{

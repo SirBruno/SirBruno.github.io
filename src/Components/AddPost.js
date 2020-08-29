@@ -60,8 +60,14 @@ export default function AddPost(props) {
     `,
 		})
 
-		const post = await res.data.addPost;
-		props.setPosts([...props.posts, post]);
+    const post = await res.data.addPost;
+    if (post.id == null) {
+      document.getElementById("req-response").innerText = 'ERROR'
+    } else {
+      document.getElementById("req-response").innerText = post.id
+      props.setPosts([post, ...props.posts]);
+    }
+
 	}
 
 	return (

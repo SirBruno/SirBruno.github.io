@@ -51,8 +51,18 @@ export default function Single() {
         author: dataAuthor.current.value
       },
       mutation: gql`
-        mutation updatePost($_id: String, $postTitle: String, $author: String, $postBody: String){
-          updatePost(_id: $_id, postTitle: $postTitle, author: $author, postBody: $postBody) {
+        mutation updatePost(
+          $_id: String,
+          $postTitle: String,
+          $author: String,
+          $postBody: String
+        ){
+          updatePost(
+            _id: $_id,
+            postTitle: $postTitle,
+            author: $author,
+            postBody: $postBody
+          ) {
             id
             postTitle
             postBody
@@ -72,9 +82,8 @@ export default function Single() {
     return <h3>Loading...</h3>
   } else return (
     <div>
-      <p>stuff</p>
-      <h3>{ post.id }</h3>
-      <p>{ post.postTitle }</p>
+      <h3>{ post.postTitle }</h3>
+      <p>{ post.id }</p>
       <p>{ post.postBody }</p>
       <input ref={dataTitle} defaultValue={ post.postTitle } />
       <br />
