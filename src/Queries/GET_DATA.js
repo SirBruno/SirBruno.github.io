@@ -2,12 +2,15 @@ import gql from 'graphql-tag';
 
 const GET_POSTS = gql`
 {
-  posts {
-    id
-    postTitle
-    postBody
-    author
-    postLikes
+  posts (pageSize: 8) {
+    hasMore
+    cursor
+    posts {
+      id
+      postTitle
+      postBody
+      cursor
+    }
   }
 }
 `
