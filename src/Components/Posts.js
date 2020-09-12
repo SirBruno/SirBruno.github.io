@@ -6,11 +6,27 @@ import gql from 'graphql-tag';
 import './Posts.styles.css';
 import AddPost from './AddPost';
 import imgPlaceholder from '../assets/image-placeholder.jpg'
+import axios from 'axios'
 
 export default function Posts(props) {
 
 	const [posts, setPosts] = useState([])
+	const [user, setUser] = useState(null)
 	const client = useApolloClient();
+
+	const userAuth = async () => {
+		const tryLoggin = await axios.get('http://localhost:4000/login?username=bruno&password=44444444', {withCredentials: true});
+		const userData = await axios.get('http://localhost:4000/user', {withCredentials: true});
+		console.log(tryLoggin);
+		console.log(userData);
+		
+		// if (tryLoggin.status == 200) {
+		// }
+	}
+
+	if (user == null) {
+		userAuth();
+	}
 
 	const { loading, error, data } = useQuery(GET_POSTS);
 
