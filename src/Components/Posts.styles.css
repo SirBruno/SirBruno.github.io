@@ -12,7 +12,7 @@ body {
 
 .booksOuter {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat( auto-fit, minmax(350px, 1fr) );
 }
 
 #postTitle {
@@ -70,4 +70,14 @@ img {
   right: 7px;
   top: 7px;
   font-size: 18px;
+}
+
+#loggedInUser {
+  margin: 50px 0;
+  text-align: center;
+}
+
+#loggedInUser span {
+  font-weight: 600;
+  text-transform: capitalize;
 }

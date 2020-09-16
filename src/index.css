@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.mainNav {
+  display: grid;
+  grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
+  text-align: center;
+  background: #000;
+}
+
+.mainNav a {
+  text-decoration: none;
+  padding: 10px;
+  color: #aaa;
+  margin: 3px;
+  background: #111;
+  transition: .3s;
+}
+
+.mainNav a:hover {
+  background: #fff;
+  color: #000;
+  transition: .3s;
+}

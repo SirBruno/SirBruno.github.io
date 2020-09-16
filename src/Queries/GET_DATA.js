@@ -11,9 +11,20 @@ const GET_POSTS = gql`
     posts {
       id
       postTitle
+      author
       postBody
-      cursor
+      postLikes
+      userId
+      categoryId
+      postComments
+      postStatus
+      postVisibility
       postImageURL
+      postTags
+      cursor
+      likedBy
+      updatedAt
+      createdAt
     }
   }
 }

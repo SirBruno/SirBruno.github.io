@@ -1,6 +1,8 @@
 import React from 'react';
 
-const EnvContext = React.createContext();
+const name = 'LULZ CONTEXT TEST HEHEHEHEHE';
+
+const EnvContext = React.createContext(name);
 
 export const EnvProvider = EnvContext.Provider;
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, useRouteMatch, Link } from "react-router-dom"
 import Single from '../Single/Single';
 
-export default function Post() {
+export default function Post(props) {
 
   const match = useRouteMatch();
 
@@ -16,7 +16,7 @@ export default function Post() {
       </ul>
         <Switch>
           <Route path={`${match.path}/:topicId`}>
-            <Single />
+            <Single setUser={props.setUser} user={props.user} posts={props.posts} setPosts={props.setPosts} />
           </Route>
           <Route path={match.path}>
             <h3>Please select a topic.</h3>
