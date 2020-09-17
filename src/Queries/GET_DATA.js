@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
-const GET_POSTS = gql`
+const GET_POSTS = (x) => gql`
 {
   posts (
-    pageSize: 8,
+    pageSize: ${x},
     # after: "2"
   ) {
     hasMore

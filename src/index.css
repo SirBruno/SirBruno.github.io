@@ -4,23 +4,57 @@ body {
 }
 
 .mainNav {
-  display: grid;
-  grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
   text-align: center;
-  background: #000;
 }
 
 .mainNav a {
   text-decoration: none;
-  padding: 10px;
+  padding: 5px;
   color: #aaa;
-  margin: 3px;
-  background: #111;
+  margin: 0 10px;
   transition: .3s;
 }
 
 .mainNav a:hover {
-  background: #fff;
-  color: #000;
+  color: #fff;
   transition: .3s;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  background: #000;
+  color: #fff;
+  padding: 0 10px;
+  height: 75px;
+  box-shadow: 0 0 10px rgba(0,0,0,.5);
+}
+
+.headerUserArea {
+  text-align: right;
+}
+
+.headerUserArea p {
+  padding: 0;
+  margin: 5px 0;
+}
+
+.loggedInUser p {
+  font-size: 12px;
+  line-height: 12px;
+  color: #aaa;
+}
+
+.username p {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.logo {
+  font-size: 20px;
+  line-height: 20px;
+  display: initial;
 }

@@ -1,13 +1,76 @@
-import React from 'react';
-// import Posts from '../../Components/Posts';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom'
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from '@apollo/react-hooks'
+import Post from '../../Containers/Post/Post'
+import Login from '../../Components/Login'
+import AddPost from '../../Components/AddPost'
+import Posts from '../../Components/Posts'
+import { useQuery } from '@apollo/react-hooks';
+import GET_POSTS from '../../Queries/GET_DATA'
+import axios from 'axios'
+import '../../index.css';
 
-export default function Home(props) {
+const uri = 'http://localhost:4000/graphql';
+const client = new ApolloClient({ uri });
 
-  // const [user, setUser] = useState(null)
+export default function Home() {
+  
+  const [posts, setPosts] = useState([])
+  const [user, setUser] = useState(null)
+
+  const { loading, error, data, refetch } = useQuery(GET_POSTS(8));
+
+  if (error) console.log(error)
 
   return (
-    <div className="Home">
-      {/* <Posts posts={props.posts} setPosts={props.setPosts} client={props.client} setUser={ setUser } user={ user } /> */}
-    </div>
+    <ApolloProvider client={client}>
+      <div className="App">
+        <Router>
+          <div>
+            <header className="header">
+              <div className="logo">LOGO</div>
+              <nav className="mainNav">
+              <Link to="/">Home</Link>
+              <Link to="/post">Post</Link>
+              <Link to="/addpost">Add Post</Link>
+              <Link to="/login">Login</Link>
+            </nav>
+              {user != null ? <div className="headerUserArea">
+                <div className="loggedInUser">
+                  <p>Logged in as</p>
+                </div>
+                <div className="username">
+                  <p>{user.username}</p>
+                </div>
+                <div></div>
+              </div> : <div className="headerUserArea">
+                <div className="username">
+                  <p>Not logged in</p>
+                </div>
+                <div></div>
+              </div>}
+            </header>
+            <Switch>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/addpost">
+                <AddPost posts={posts} setPosts={setPosts} refetch={refetch} />
+              </Route>
+              <Route path="/post">
+                <Post setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
+              </Route>
+              <Route path="/">
+                <Posts posts={posts} setPosts={setPosts} data={data} loading={loading} client={client} setUser={setUser} user={user} />
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      </div>
+    </ApolloProvider>
   )
 }
+
+// **********************************************************

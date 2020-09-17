@@ -12,15 +12,10 @@ export default function Single(props) {
   const { topicId } = useParams();
   const client = useApolloClient();
   const [post, setPost] = useState(0);
-  // const [user, setUser] = useState(null)
 
   if (props.user == null) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
   }
-
-  // console.log(props.user);
-  // console.log(post);
-  // console.log(topicId);
 
   const dataTitle = React.createRef();
   const dataAuthor = React.createRef();
@@ -46,7 +41,6 @@ export default function Single(props) {
 
       const postRes = await res.data.post
       setPost(postRes);
-      // console.log(post)
     }
 
     getPost()
@@ -102,8 +96,8 @@ export default function Single(props) {
     `,
     })
     const deletedId = await deletedPost.data.deletePost.id;
-    props.setPosts(props.posts.filter(post => post.id !== deletedId))
     console.log(deletedId);
+    props.refetch()
   }
 
   if (post === 0) {

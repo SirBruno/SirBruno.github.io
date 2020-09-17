@@ -16,7 +16,7 @@ export default function Post(props) {
       </ul>
         <Switch>
           <Route path={`${match.path}/:topicId`}>
-            <Single setUser={props.setUser} user={props.user} posts={props.posts} setPosts={props.setPosts} />
+            <Single setUser={props.setUser} user={props.user} posts={props.posts} setPosts={props.setPosts} refetch={props.refetch} />
           </Route>
           <Route path={match.path}>
             <h3>Please select a topic.</h3>

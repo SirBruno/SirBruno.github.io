@@ -2,24 +2,68 @@ body {
   font-family: 'Fira Sans', sans-serif;
 }
 
-.bookContainer {
+.postContainer {
   margin: 7px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .25);
-  padding: 28px;
+  box-shadow: 0 0 14px rgba(0, 0, 0, .6);
+  background: #171717;
   border-radius: 3px;
   overflow: hidden;
+  color: #fff;
+  transition: .3s;
 }
 
-.booksOuter {
+.postContainer:hover {
+  margin: 7px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, .85);
+  cursor: pointer;
+  transition: .3s;
+}
+
+.postContainer:first-child {
+  grid-column: 1 / span 2;
+  grid-row: 1 / span 1;
+  height: 500px;
+}
+
+.postContainer:first-child img {
+  height: 500px;
+}
+
+.postContainer:first-child .postInfo {
+  position: relative;
+    top: -494px;
+    padding-top: 275px;
+    background: linear-gradient(to top, black, transparent);
+}
+
+.postsOuter {
   display: grid;
   grid-template-columns: repeat( auto-fit, minmax(350px, 1fr) );
+  padding: 50px 10px;
+  background: #191919;
+}
+
+.postInfo {
+  padding: 15px 25px;
+  position: relative;
+  height: 200px;
+}
+
+.postMeta {
+  font-size: 14px;
+  line-height: 14px;
+  text-transform: capitalize;
+  position: absolute;
+  bottom: 0;
+  font-weight: 500;
+  color: #777;
 }
 
 #postTitle {
   font-size: 24px;
   font-weight: bold;
   text-decoration: none;
-  color: #000;
+  color: #fff;
   text-transform: capitalize;
 }
 
@@ -28,7 +72,7 @@ body {
   width: 0;
   height: 3px;
   position: relative;
-  background-image: linear-gradient(to right, #000, #fff);
+  background-image: linear-gradient(to right, #fff, #111);
   display: block;
   bottom: 0;
   transition: .2s;

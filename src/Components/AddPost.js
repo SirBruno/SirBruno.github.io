@@ -11,9 +11,7 @@ export default function AddPost(props) {
 
   const client = useApolloClient();
   const dataTitle = React.createRef();
-  // const dataAuthor = React.createRef();
   const dataDescription = React.createRef();
-  // const dataUserId = React.createRef();
   const dataCategoryId = React.createRef();
   const dataPostStatus = React.createRef();
   const dataPostVisibility = React.createRef();
@@ -38,8 +36,8 @@ export default function AddPost(props) {
         postVisibility: dataPostVisibility.current.value,
         postImageURL: dataPostImageURL.current.value,
         postTags: dataPostTags.current.value,
-        updatedAt: "today",
-        createdAt: "today",
+        updatedAt: today,
+        createdAt: today,
         postLikes: 0
       },
       mutation: gql`
@@ -94,12 +92,9 @@ export default function AddPost(props) {
       document.getElementById("req-response").innerText = 'ERROR'
     } else {
       document.getElementById("req-response").innerText = post.id
-      // console.log(props.posts)
-      props.setPosts([post, ...props.posts]);
+      console.log(props.posts)
+      props.refetch()
     }
-
-    // console.log(res);
-
   }
 
   return (
