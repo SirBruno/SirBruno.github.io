@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom'
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
@@ -9,7 +8,6 @@ import AddPost from '../../Components/AddPost'
 import Posts from '../../Components/Posts'
 import { useQuery } from '@apollo/react-hooks';
 import GET_POSTS from '../../Queries/GET_DATA'
-import axios from 'axios'
 import '../../index.css';
 
 const uri = 'http://localhost:4000/graphql';
