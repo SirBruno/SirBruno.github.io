@@ -3,17 +3,18 @@ body {
 }
 
 .postContainer {
-  margin: 7px;
   box-shadow: 0 0 14px rgba(0, 0, 0, .6);
   background: #171717;
   border-radius: 3px;
   overflow: hidden;
   color: #fff;
   transition: .3s;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 500px;
 }
 
 .postContainer:hover {
-  margin: 7px;
   box-shadow: 0 0 16px rgba(0, 0, 0, .85);
   cursor: pointer;
   transition: .3s;
@@ -23,6 +24,7 @@ body {
   grid-column: 1 / span 2;
   grid-row: 1 / span 1;
   height: 500px;
+  display: grid;
 }
 
 .postContainer:first-child img {
@@ -31,22 +33,36 @@ body {
 
 .postContainer:first-child .postInfo {
   position: relative;
-    top: -494px;
-    padding-top: 275px;
-    background: linear-gradient(to top, black, transparent);
+  top: -500px;
+  height: 500px;
+  background: linear-gradient(to top, black, rgba(0,0,0,.5));
+  margin: 0;
+  padding: 15px;
+  box-sizing: border-box;
+  align-items: end;
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+.postContainer:first-child .postMeta {
+  position: relative;
 }
 
 .postsOuter {
   display: grid;
   grid-template-columns: repeat( auto-fit, minmax(350px, 1fr) );
-  padding: 50px 10px;
+  padding: 50px 20px;
   background: #191919;
+  grid-row-gap: 15px;
+  grid-column-gap: 15px;
 }
 
 .postInfo {
   padding: 15px 25px;
   position: relative;
-  height: 200px;
+  height: 100%;
+  position: relative;
+  display: inline-table;
 }
 
 .postMeta {
@@ -70,43 +86,25 @@ body {
 #postTitle:after {
   content: '';
   width: 0;
-  height: 3px;
+  height: 2px;
   position: relative;
-  background-image: linear-gradient(to right, #fff, #111);
+  background: #fff;
   display: block;
   bottom: 0;
   transition: .2s;
+  margin-top: 2px;
 }
 
 #postTitle:hover:after {
-  width: 50%;
+  width: 25%;
   transition: .2s;
 }
 
 img {
   position: relative;
-  height: 200px;
+  height: 100%;
   width: 100%;
   object-fit: cover;
-}
-
-#deleteBtn {
-  background: #eee;
-  color: #aaa;
-  margin-left: 10px;
-  float: right;
-  right: -50px !important;
-  top: -50px !important;
-  border-radius: 100px !important;
-  height: 85px;
-  width: 85px;
-  position: relative;
-  overflow: hidden;
-}
-
-#deleteBtn:hover {
-  background: rgb(0, 0, 0);
-  color: #fff;
 }
 
 .MuiButton-label {

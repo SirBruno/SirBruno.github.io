@@ -26,9 +26,20 @@ body {
   align-items: center;
   background: #000;
   color: #fff;
-  padding: 0 10px;
-  height: 75px;
+  padding: 0 20px;
+  height: 60px;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
+  position: relative;
+}
+
+.header:after {
+  content: '';
+  height: 3px;
+  background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet); /* Standard syntax (must be last) */
+  display: block;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 }
 
 .headerUserArea {

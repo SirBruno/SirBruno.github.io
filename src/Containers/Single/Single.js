@@ -4,18 +4,21 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import axios from 'axios'
+import './Single.css'
 
 export default function Single(props) {
 
-  console.log('Root');
-
+  
   const { topicId } = useParams();
   const client = useApolloClient();
   const [post, setPost] = useState(0);
-
+  
   if (props.user == null) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
   }
+  
+  console.log(props.user?._id);
+  console.log(post.userId);
 
   const dataTitle = React.createRef();
   const dataAuthor = React.createRef();
@@ -30,6 +33,7 @@ export default function Single(props) {
           query post($_id: String){
             post(_id: $_id) {
               id
+              userId
               postTitle
               postBody
               author
@@ -103,11 +107,11 @@ export default function Single(props) {
   if (post === 0) {
     return <h3>Loading...</h3>
   } else return (
-    <div>
+    <div class="SingleComponent">
       <h3>{post.postTitle}</h3>
       <p>{post.id}</p>
       <p>{post.postBody}</p>
-      <>{props.user != null ? <>
+      <>{(props.user?._id === post.userId) ? <>
         <input ref={dataTitle} defaultValue={post.postTitle} />
         <br />
         <input ref={dataAuthor} defaultValue={post.author} />
