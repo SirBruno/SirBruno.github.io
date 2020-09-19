@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route, useRouteMatch } from "react-router-dom"
-import Single from '../Single/Single';
+import EditSingle from '../Single/EditSingle';
 
 export default function Post(props) {
 
@@ -10,7 +10,7 @@ export default function Post(props) {
     <div>
       <Switch>
         <Route path={`${match.path}/:topicId`}>
-          <Single setUser={props.setUser} user={props.user} posts={props.posts} setPosts={props.setPosts} refetch={props.refetch} />
+          <EditSingle setUser={props.setUser} user={props.user} posts={props.posts} setPosts={props.setPosts} refetch={props.refetch} />
         </Route>
       </Switch>
     </div>

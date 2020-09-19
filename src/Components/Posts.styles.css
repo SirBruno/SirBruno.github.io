@@ -83,6 +83,14 @@ body {
   text-transform: capitalize;
 }
 
+.postInfo p {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 70ch;
+  position: relative;
+  overflow: hidden;
+}
+
 #postTitle:after {
   content: '';
   width: 0;
