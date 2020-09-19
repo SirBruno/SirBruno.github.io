@@ -1,3 +1,71 @@
-.SingleComponent * {
-  border: 2px solid red;
+.SingleComponent {
+  background: #191919;
+  min-height: 100vh;
+  padding: 50px 20px;
+}
+
+.SingleComponent .singlePostContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: left;
+  color: #fff;
+}
+
+.SingleComponent .SinglePostImage {
+  height: 550px;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .3);
+}
+
+.SingleComponent .singlePostTop {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.SingleComponent .singlePostTitle {
+  margin: 0 0 40px 0;
+  color: #fff;
+  font-size: 50px;
+  text-transform: capitalize;
+}
+
+.SingleComponent .singlePostTitle:after {
+  content: '';
+  background: #fff;
+  height: 3px;
+  display: block;
+  width: 25%;
+  margin-top: 20px;
+}
+
+.SingleComponent .SingePostTitleArea {
+  padding: 50px;
+  color: #bbb;
+}
+
+.SingleComponent .SingleMetaTitle {
+  font-size: 14px;
+  margin: 0;
+  color: #777;
+}
+
+.SingleComponent .SingleMetaTitle b {
+  color: #bbb;
+  font-weight: 500;
+}
+
+.SingleComponent .SinglePostAuthor {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.SingleComponent .SinglePostMeta i {
+  display: block;
+  margin: 4px 0;
+}
+
+.SingleComponent .SinglePostBody {
+  margin: 50px 0;
+  color: #bbb;
 }

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
 import Post from '../../Containers/Post/Post'
+import Edit from '../../Containers/Post/Edit'
 import Login from '../../Components/Login'
 import AddPost from '../../Components/AddPost'
 import Posts from '../../Components/Posts'
@@ -59,6 +60,9 @@ export default function Home() {
               </Route>
               <Route path="/post">
                 <Post setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
+              </Route>
+              <Route path="/edit">
+                <Edit setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
               </Route>
               <Route path="/">
                 <Posts posts={posts} setPosts={setPosts} data={data} loading={loading} client={client} setUser={setUser} user={user} />
