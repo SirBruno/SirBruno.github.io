@@ -4,14 +4,29 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import axios from 'axios'
-import './Single.css'
+import { Editor } from '@tinymce/tinymce-react';
+import styles from './EditSingle.module.css'
 
 export default function Single(props) {
 
+  let today = new Date();
+
+  today = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
 
   const { topicId } = useParams();
   const client = useApolloClient();
   const [post, setPost] = useState(0);
+
+  const [postBody, setpostBody] = useState(null)
+
+  const handleEditorChange = (e) => {
+    setpostBody(e.target.getContent());
+  }
+
+  console.log(
+    'Content was updated:',
+    postBody
+  );
 
   if (props.user == null) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
@@ -21,9 +36,11 @@ export default function Single(props) {
   console.log(post.userId);
 
   const dataTitle = React.createRef();
-  const dataAuthor = React.createRef();
-  const dataDescription = React.createRef();
   const dataPostImageURL = React.createRef();
+  const categoryId = React.createRef();
+  const postStatus = React.createRef();
+  const postVisibility = React.createRef();
+  const postTags = React.createRef();
 
   useEffect(() => {
     const getPost = async () => {
@@ -38,6 +55,11 @@ export default function Single(props) {
               postBody
               author
               postImageURL
+              userId
+              categoryId
+              postStatus
+              postVisibility
+              postTags
             }
           }
       `,
@@ -51,13 +73,23 @@ export default function Single(props) {
   });
 
   const updatePost = async (_id) => {
+
+    // updatedAt: String
+    // createdAt: String
+
     const res = await client.mutate({
       variables: {
         _id,
         postTitle: dataTitle.current.value,
-        postBody: dataDescription.current.value,
-        author: dataAuthor.current.value,
-        postImageURL: dataPostImageURL.current.value
+        postBody: postBody,
+        author: props.user?.username,
+        postImageURL: dataPostImageURL.current.value,
+        userId: props.user?._id,
+        categoryId: categoryId.current.value,
+        postStatus: postStatus.current.value,
+        postVisibility: postVisibility.current.value,
+        postTags: postTags.current.value,
+        updatedAt: today
       },
       mutation: gql`
         mutation updatePost(
@@ -66,6 +98,12 @@ export default function Single(props) {
           $author: String,
           $postBody: String
           $postImageURL: String
+          $userId: String
+          $categoryId: String
+          $postStatus: String
+          $postVisibility: String
+          $postTags: [String]
+          $updatedAt: String
         ){
           updatePost(
             _id: $_id,
@@ -73,12 +111,24 @@ export default function Single(props) {
             author: $author,
             postBody: $postBody
             postImageURL: $postImageURL
+            userId: $userId
+            categoryId: $categoryId
+            postStatus: $postStatus
+            postVisibility: $postVisibility
+            postTags: $postTags
+            updatedAt: $updatedAt
           ) {
             id
             postTitle
             postBody
             author
             postImageURL
+            userId
+            categoryId
+            postStatus
+            postVisibility
+            postTags
+            updatedAt
           }
         }
     `,
@@ -107,34 +157,39 @@ export default function Single(props) {
   if (post === 0) {
     return <h3>Loading...</h3>
   } else return (
-    <div className="SingleComponent">
-      <div className="singlePostContainer">
-        <div className="singlePostTop">
-          <img className="SinglePostImage" src={post.postImageURL} alt="Post cover" />
-          <div className="SingePostTitleArea">
-            <p>{post.id}</p>
-            <p>{post.postBody}</p>
-            <>{(props.user?._id === post.userId) ? <>
-              <input ref={dataTitle} defaultValue={post.postTitle} />
-              <br />
-              <input ref={dataAuthor} defaultValue={post.author} />
-              <br />
-              <input ref={dataDescription} defaultValue={post.postBody} />
-              <br />
-              <input ref={dataPostImageURL} defaultValue={post.postImageURL} />
-              <br />
-              <button onClick={() => updatePost(post.id)}>Submit</button>
-              <br />
-              <Button onClick={() => deletePost(post.id)} style={{
-                marginLeft: 10
-              }}>Delete post</Button>
-              <p id="updatePostSuccess"> Success? </p>
-            </> : <p>Log in to edit</p>}</>
-          </div>
-        </div>
-        <div>
-          <p>This page is for editing post!</p>
-        </div>
+    <div className={styles.main}>
+      <div className={styles.contentArea}>
+        <>{(props.user?._id === post.userId) ? <>
+          <input className={styles.input} ref={dataTitle} defaultValue={post.postTitle} />
+          <input className={styles.input} ref={categoryId} defaultValue={post.categoryId} />
+          <input className={styles.input} ref={postStatus} defaultValue={post.postStatus} />
+          <input className={styles.input} ref={postVisibility} defaultValue={post.postVisibility} />
+          <input className={styles.input} ref={postTags} defaultValue={post.postTags} />
+          <Editor
+            className={styles.rte}
+            apiKey="q31wtvx0j17p1wh5gptlu2kd2v89ptvgdse9c710oyabnbzk"
+            initialValue={post.postBody}
+            init={{
+              height: 500,
+              menubar: false,
+              plugins: [
+                'advlist autolink lists link image',
+                'charmap print preview anchor help',
+                'searchreplace visualblocks code',
+                'insertdatetime media table paste wordcount'
+              ],
+              toolbar:
+                'undo redo | formatselect | bold italic | alignleft aligncenter alignright | \bullist numlist outdent indent | help'
+            }}
+            onChange={handleEditorChange}
+          />
+          <input className={styles.input} ref={dataPostImageURL} defaultValue={post.postImageURL} />
+          <button className={styles.btn} onClick={() => updatePost(post.id)}>Submit</button>
+          <Button onClick={() => deletePost(post.id)} style={{
+            marginLeft: 10
+          }}>Delete post</Button>
+          <p id="updatePostSuccess"> Success? </p>
+        </> : <p>Log in to edit</p>}</>
       </div>
     </div>
   )
