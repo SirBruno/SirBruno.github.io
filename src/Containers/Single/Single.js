@@ -70,11 +70,13 @@ export default function Single(props) {
               <i className="SingleMetaTitle">Date: <b>{post.createdAt}</b></i>
               <i className="SingleMetaTitle">Category: <b>{post.categoryId}</b></i>
               <i className="SingleMetaTitle">Tags: <b>{post.postTags}</b></i>
+              <br />
             </div>
+            {props.user?._id === post.userId ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i class="far fa-edit"></i> Edit post</a> : null}
           </div>
         </div>
         <div>
-          <div className="SinglePostBody">{ ReactHtmlParser(post.postBody) }</div>
+          <div className="SinglePostBody">{ReactHtmlParser(post.postBody)}</div>
         </div>
       </div>
     </div>

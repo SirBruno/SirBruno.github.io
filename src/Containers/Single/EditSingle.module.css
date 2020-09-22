@@ -1,0 +1,31 @@
+.btn {
+  border: 2px solid red;
+}
+
+.main {
+  text-align: center;
+  background: #191919;
+  color: #fff;
+  min-height: 100vh;
+  padding: 50px 20px;
+}
+
+.main * {
+  font-family: 'Fira Sans', sans-serif !important;
+}
+
+.input {
+  border: none;
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 14px;
+  outline: none;
+}
+
+.contentArea {
+  margin: 0 auto;
+  max-width: 700px;
+  display: grid;
+  row-gap: 12px;
+  grid-template-columns: 1fr;
+}

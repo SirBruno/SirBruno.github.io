@@ -19,6 +19,7 @@
 .SingleComponent .singlePostTop {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
 
 .SingleComponent .singlePostTitle {
@@ -38,7 +39,7 @@
 }
 
 .SingleComponent .SingePostTitleArea {
-  padding: 50px;
+  padding: 0 50px;
   color: #bbb;
 }
 
@@ -68,4 +69,15 @@
 .SingleComponent .SinglePostBody {
   margin: 50px 0;
   color: #bbb;
+}
+
+a.SingleEditPost {
+  text-decoration: none;
+  color: #777;
+  transition: .3s;
+}
+
+a.SingleEditPost:hover {
+  color: #fff;
+  transition: .3s;
 }
