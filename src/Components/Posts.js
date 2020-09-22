@@ -9,6 +9,8 @@ export default function Posts(props) {
 		axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
 	}
 
+	console.log(props.data?.posts.posts[0].postBody.match("<p>s*(.+?)s*</p>")[0]?.replace(/(<([^>]+)>)/ig, ""))
+
 
 	if (props.loading) {
 		return <p>Loading...</p>
@@ -21,7 +23,11 @@ export default function Posts(props) {
 							<img src={posts.postImageURL ? posts.postImageURL : imgPlaceholder} alt="no img found" />
 							<div className="postInfo">
 								<a id="postTitle" href={`/post/${posts.id}`}>{posts.postTitle}</a>
-								<p>{posts.postBody}</p>
+								<p>{
+									// posts.postBody.match("<p>s*(.+?)s*</p>")[0].replace(/(<([^>]+)>)/ig, "")
+									posts.postBody?.match("<p>s*(.+?)s*</p>") ? posts.postBody.match("<p>s*(.+?)s*</p>")[0].replace(/(<([^>]+)>)/ig, "")
+									: posts.postBody.replace(/(<([^>]+)>)/ig, "")
+								}</p>
 								<div className="postMeta">
 									<p>{posts.categoryId}</p>
 								</div>

@@ -4,6 +4,7 @@ import { useApolloClient } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import axios from 'axios'
 import './Single.css'
+import ReactHtmlParser from 'react-html-parser';
 
 export default function Single(props) {
 
@@ -73,7 +74,7 @@ export default function Single(props) {
           </div>
         </div>
         <div>
-          <p className="SinglePostBody">{post.postBody}</p>
+          <div className="SinglePostBody">{ ReactHtmlParser(post.postBody) }</div>
         </div>
       </div>
     </div>

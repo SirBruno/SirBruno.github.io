@@ -8,16 +8,22 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@tinymce/tinymce-react": "^3.6.1",
     "apollo-boost": "^0.4.7",
     "audit": "0.0.6",
     "axios": "^0.19.2",
+    "draft-js": "^0.11.7",
+    "draft-js-plugins-editor": "^3.0.0",
+    "draft-js-static-toolbar-plugin": "^3.0.1",
     "env-cmd": "^10.1.0",
     "fix": "0.0.6",
     "graphql": "^14.6.0",
-    "react": "^16.13.0",
+    "react": "^16.13.1",
     "react-apollo": "^3.1.5",
-    "react-dom": "^16.13.0",
+    "react-dom": "^16.13.1",
+    "react-html-parser": "^2.0.2",
     "react-router-dom": "^5.1.2",
+    "react-rte": "^0.16.3",
     "react-scripts": "3.4.0"
   },
   "scripts": {
@@ -42,5 +48,8 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "css-loader": "^4.3.0",
+    "style-loader": "^1.2.1"
+  }
 }
