@@ -2,8 +2,20 @@ import React, { useState } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import axios from 'axios'
+import { Editor } from '@tinymce/tinymce-react';
 
 export default function AddPost(props) {
+
+  const [postBody, setpostBody] = useState(null)
+
+  const handleEditorChange = (e) => {
+    setpostBody(e.target.getContent());
+  }
+
+  console.log(
+    'Content was updated:',
+    postBody
+  );
 
   let today = new Date();
 
@@ -29,7 +41,7 @@ export default function AddPost(props) {
       variables: {
         postTitle: dataTitle.current.value,
         author: user.username,
-        postBody: dataDescription.current.value,
+        postBody: postBody,
         userId: user._id,
         categoryId: dataCategoryId.current.value,
         postStatus: dataPostStatus.current.value,
@@ -110,6 +122,23 @@ export default function AddPost(props) {
           <input ref={dataTitle} placeholder="Title" />
           <br />
           <input ref={dataDescription} placeholder="Post Body" />
+          <Editor
+        apiKey="q31wtvx0j17p1wh5gptlu2kd2v89ptvgdse9c710oyabnbzk"
+        initialValue="<p>Initial content</p>"
+        init={{
+          height: 500,
+          menubar: false,
+          plugins: [
+            'advlist autolink lists link image',
+            'charmap print preview anchor help',
+            'searchreplace visualblocks code',
+            'insertdatetime media table paste wordcount'
+          ],
+          toolbar:
+            'undo redo | formatselect | bold italic | alignleft aligncenter alignright | \bullist numlist outdent indent | help'
+        }}
+        onChange={handleEditorChange}
+      />
           <br />
           <input ref={dataCategoryId} placeholder="Category Id" />
           <br />
