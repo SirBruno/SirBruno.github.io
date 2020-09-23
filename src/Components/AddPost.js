@@ -29,20 +29,18 @@ export default function AddPost(props) {
   const dataPostVisibility = React.createRef();
   const dataPostImageURL = React.createRef();
   const dataPostTags = React.createRef();
-  const [user, setUser] = useState(null)
 
-
-  if (user == null) {
-    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
-  }
+  if (props.user == null) {
+		axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+	}
 
   const addPost = async () => {
     const res = await client.mutate({
       variables: {
         postTitle: dataTitle.current.value,
-        author: user.username,
+        author: props.user.username,
         postBody: postBody,
-        userId: user._id,
+        userId: props.user._id,
         categoryId: dataCategoryId.current.value,
         postStatus: dataPostStatus.current.value,
         postVisibility: dataPostVisibility.current.value,
@@ -111,13 +109,13 @@ export default function AddPost(props) {
 
   return (
     <div id="loggedInUser">{
-      user == null
+      props.user == null
         ? <p>You're not logged in.</p>
         : <div>
-          <p>Logged in as: <span>{user.username}</span></p>
-          <input defaultValue={user._id} placeholder="Title" />
+          <p>Logged in as: <span>{props.user.username}</span></p>
+          <input defaultValue={props.user._id} placeholder="Title" />
           <br />
-          <input defaultValue={user.username} placeholder="Title" />
+          <input defaultValue={props.user.username} placeholder="Title" />
           <br />
           <input ref={dataTitle} placeholder="Title" />
           <br />

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom";
 import { useApolloClient } from '@apollo/react-hooks';
-import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import axios from 'axios'
 import { Editor } from '@tinymce/tinymce-react';
@@ -16,6 +15,7 @@ export default function Single(props) {
   const { topicId } = useParams();
   const client = useApolloClient();
   const [post, setPost] = useState(0);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const [postBody, setpostBody] = useState(null)
 
@@ -135,9 +135,9 @@ export default function Single(props) {
     })
 
     if (res.data.updatePost.id) {
-      document.getElementById("updatePostSuccess").innerText = res.data.updatePost.id
+      document.getElementById("updatePostSuccess").innerText = 'Update successful!'
     }
-
+    props.refetch()
   }
 
   const deletePost = async (_id) => {
@@ -150,7 +150,9 @@ export default function Single(props) {
     `,
     })
     const deletedId = await deletedPost.data.deletePost.id;
-    console.log(deletedId);
+    if (deletedId) {
+      document.getElementById("updatePostSuccess").innerText = 'Delete successful!'
+    }
     props.refetch()
   }
 
@@ -160,11 +162,24 @@ export default function Single(props) {
     <div className={styles.main}>
       <div className={styles.contentArea}>
         <>{(props.user?._id === post.userId) ? <>
-          <input className={styles.input} ref={dataTitle} defaultValue={post.postTitle} />
-          <input className={styles.input} ref={categoryId} defaultValue={post.categoryId} />
-          <input className={styles.input} ref={postStatus} defaultValue={post.postStatus} />
-          <input className={styles.input} ref={postVisibility} defaultValue={post.postVisibility} />
-          <input className={styles.input} ref={postTags} defaultValue={post.postTags} />
+          <label className={styles.label}>Post title
+            <input className={styles.input} ref={dataTitle} defaultValue={post.postTitle} />
+          </label>
+          <label className={styles.label}>Category
+            <input className={styles.input} ref={categoryId} defaultValue={post.categoryId} />
+          </label>
+          <label className={styles.label}>Status
+            <input className={styles.input} ref={postStatus} defaultValue={post.postStatus} />
+          </label >
+          <label className={styles.label}>Visibility
+            <input className={styles.input} ref={postVisibility} defaultValue={post.postVisibility} />
+          </label>
+          <label className={styles.label}>Tags
+            <input className={styles.input} ref={postTags} defaultValue={post.postTags} />
+          </label>
+          <label className={styles.label}>Cover
+            <input className={styles.input} ref={dataPostImageURL} defaultValue={post.postImageURL} />
+          </label>
           <Editor
             className={styles.rte}
             apiKey="q31wtvx0j17p1wh5gptlu2kd2v89ptvgdse9c710oyabnbzk"
@@ -183,12 +198,15 @@ export default function Single(props) {
             }}
             onChange={handleEditorChange}
           />
-          <input className={styles.input} ref={dataPostImageURL} defaultValue={post.postImageURL} />
           <button className={styles.btn} onClick={() => updatePost(post.id)}>Submit</button>
-          <Button onClick={() => deletePost(post.id)} style={{
-            marginLeft: 10
-          }}>Delete post</Button>
-          <p id="updatePostSuccess"> Success? </p>
+          <button onClick={() => setShowConfirmDelete(!showConfirmDelete)} className={styles.deleteBtn}>Delete post</button>
+          <div Style={`display: ${showConfirmDelete ? 'block' : 'none'}`}>
+            <p>Are you sure?</p>
+            <button className={styles.confirmDeleteYes} onClick={() => deletePost(post.id)}>Yes</button>
+            <button onClick={() => setShowConfirmDelete(!showConfirmDelete)} className={styles.confirmDeleteNo}>No</button>
+          </div>
+          <p id="updatePostSuccess"></p>
+          <p id="deletePostSuccess"></p>
         </> : <p>Log in to edit</p>}</>
       </div>
     </div>
