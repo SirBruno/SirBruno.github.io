@@ -56,7 +56,7 @@ export default function Home() {
                 <Login />
               </Route>
               <Route path="/addpost">
-                <AddPost posts={posts} setPosts={setPosts} refetch={refetch} />
+                <AddPost setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
               </Route>
               <Route path="/post">
                 <Post setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />

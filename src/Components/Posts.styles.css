@@ -83,12 +83,22 @@ body {
   text-transform: capitalize;
 }
 
-.postInfo p {
+.postContainer:first-child .postInfo p {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 70ch;
   position: relative;
   overflow: hidden;
+}
+
+.postInfo p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
 
 #postTitle:after {
