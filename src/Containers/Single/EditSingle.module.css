@@ -17,9 +17,8 @@
 
 .deleteBtn {
   border: none;
-  background: #D90000;
-  padding: 20px;
-  color: rgba(255, 255, 255, .5);
+  background: none;
+  color: #777;
   outline: none;
   font-size: 16px;
   border-radius: 3px;
@@ -27,7 +26,7 @@
 }
 
 .deleteBtn:hover {
-  color: #fff;
+  color: #D90000;
   transition: .3s;
   cursor: pointer;
 }
@@ -76,7 +75,10 @@
 
 .confirmDeleteYes {
   border: none;
-  padding: 5px 15px;
+  height: 35px;
+  width: 75px;
+  font-size: 15px;
+  line-height: 15px;
   border-radius: 3px;
   outline: none;
   font-weight: 500;
@@ -88,13 +90,17 @@
 
 .confirmDeleteYes:hover {
   cursor: pointer;
-  box-shadow: 0 3px 3px rgba(0,0,0,.5);
+  background: #fff;
+  color: #D90000;
   transition: .3s;
 }
 
 .confirmDeleteNo {
   border: none;
-  padding: 5px 15px;
+  height: 35px;
+  width: 75px;
+  font-size: 15px;
+  line-height: 15px;
   border-radius: 3px;
   outline: none;
   font-weight: 500;
@@ -106,6 +112,14 @@
 
 .confirmDeleteNo:hover {
   cursor: pointer;
-  box-shadow: 0 3px 3px rgba(0,0,0,.5);
+  background: #000;
+  color: #fff;
   transition: .3s;
+}
+
+.deleteBtn:before {
+  content: '\f057';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 600;
+  margin-right: 3px;
 }
