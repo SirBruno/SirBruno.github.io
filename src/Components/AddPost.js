@@ -3,6 +3,7 @@ import { useApolloClient } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import axios from 'axios'
 import { Editor } from '@tinymce/tinymce-react';
+import styles from './AddPost.module.css'
 
 export default function AddPost(props) {
 
@@ -23,7 +24,6 @@ export default function AddPost(props) {
 
   const client = useApolloClient();
   const dataTitle = React.createRef();
-  const dataDescription = React.createRef();
   const dataCategoryId = React.createRef();
   const dataPostStatus = React.createRef();
   const dataPostVisibility = React.createRef();
@@ -31,8 +31,8 @@ export default function AddPost(props) {
   const dataPostTags = React.createRef();
 
   if (props.user == null) {
-		axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
-	}
+    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+  }
 
   const addPost = async () => {
     const res = await client.mutate({
@@ -101,57 +101,46 @@ export default function AddPost(props) {
     if (post.id == null) {
       document.getElementById("req-response").innerText = 'ERROR'
     } else {
-      document.getElementById("req-response").innerText = post.id
+      document.getElementById("req-response").innerText = 'Post added successfully!'
       console.log(props.posts)
       props.refetch()
     }
   }
 
   return (
-    <div id="loggedInUser">{
-      props.user == null
-        ? <p>You're not logged in.</p>
-        : <div>
-          <p>Logged in as: <span>{props.user.username}</span></p>
-          <input defaultValue={props.user._id} placeholder="Title" />
-          <br />
-          <input defaultValue={props.user.username} placeholder="Title" />
-          <br />
-          <input ref={dataTitle} placeholder="Title" />
-          <br />
-          <input ref={dataDescription} placeholder="Post Body" />
-          <Editor
-        apiKey="q31wtvx0j17p1wh5gptlu2kd2v89ptvgdse9c710oyabnbzk"
-        initialValue="<p>Initial content</p>"
-        init={{
-          height: 500,
-          menubar: false,
-          plugins: [
-            'advlist autolink lists link image',
-            'charmap print preview anchor help',
-            'searchreplace visualblocks code',
-            'insertdatetime media table paste wordcount'
-          ],
-          toolbar:
-            'undo redo | formatselect | bold italic | alignleft aligncenter alignright | \bullist numlist outdent indent | help'
-        }}
-        onChange={handleEditorChange}
-      />
-          <br />
-          <input ref={dataCategoryId} placeholder="Category Id" />
-          <br />
-          <input ref={dataPostStatus} placeholder="Post Status" />
-          <br />
-          <input ref={dataPostVisibility} placeholder="Post Visibility" />
-          <br />
-          <input ref={dataPostImageURL} placeholder="Post image" />
-          <br />
-          <input ref={dataPostTags} placeholder="Tags" />
-          <br />
-          <button onClick={() => addPost()}>Send</button>
-          <br />
-          <p id="req-response">request's response goes here...</p>
-        </div>
-    }</div>
+    <div className={styles.main}>
+      <div id="loggedInUser">{
+        props.user == null
+          ? <p>You're not logged in.</p>
+          : <div className={styles.contentArea}>
+            <input className={styles.input} ref={dataTitle} placeholder="Title" />
+            <input className={styles.input} ref={dataCategoryId} placeholder="Category Id" />
+            <input className={styles.input} ref={dataPostStatus} placeholder="Post Status" />
+            <input className={styles.input} ref={dataPostVisibility} placeholder="Post Visibility" />
+            <input className={styles.input} ref={dataPostImageURL} placeholder="Post image" />
+            <input className={styles.input} ref={dataPostTags} placeholder="Tags" />
+            <Editor
+              apiKey="q31wtvx0j17p1wh5gptlu2kd2v89ptvgdse9c710oyabnbzk"
+              initialValue=""
+              init={{
+                height: 500,
+                menubar: false,
+                plugins: [
+                  'advlist autolink lists link image',
+                  'charmap print preview anchor help',
+                  'searchreplace visualblocks code',
+                  'insertdatetime media table paste wordcount'
+                ],
+                toolbar:
+                  'undo redo | formatselect | bold italic | alignleft aligncenter alignright | \bullist numlist outdent indent | help'
+              }}
+              onChange={handleEditorChange}
+            />
+            <button className={styles.btn} onClick={() => addPost()}>Send</button>
+            <br />
+            <p id="req-response"></p>
+          </div>
+      }</div>
+    </div>
   )
 }
