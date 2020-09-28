@@ -53,7 +53,7 @@ export default function Home() {
             </header>
             <Switch>
               <Route path="/login">
-                <Login />
+                <Login setUser={setUser} user={user} loading={loading} />
               </Route>
               <Route path="/addpost">
                 <AddPost setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />

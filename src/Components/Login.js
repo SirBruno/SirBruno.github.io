@@ -1,36 +1,40 @@
-import React, { useState } from 'react'
+import React from 'react'
 import axios from 'axios'
+import styles from './Login.module.css'
 
-export default function () {
+export default function (props) {
 
-  const [user, setUser] = useState(null)
   const inputUsername = React.createRef();
-	const inputPassword = React.createRef();
+  const inputPassword = React.createRef();
 
-  if (user == null) {
-    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
+  if (props.user == null) {
+    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
   }
 
   const userAuth = async () => {
-		const tryLoggin = await axios.get(`http://localhost:4000/login?username=${inputUsername.current.value}&password=${inputPassword.current.value}`, { withCredentials: true });
+    const tryLoggin = await axios.get(`http://localhost:4000/login?username=${inputUsername.current.value}&password=${inputPassword.current.value}`, { withCredentials: true });
 
-		if (user == null) {
-			axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
-		}
+    if (props.user == null) {
+      axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+    }
 
-		return tryLoggin;
-	}
-
-  console.log(user);
+    return tryLoggin;
+  }
 
   return (
-    <> { user == null ? <>
-      <input ref={inputUsername} placeholder="Username"></input>
-      <br />
-      <input ref={inputPassword} placeholder="Password"></input>
-      <br />
-      <button onClick={() => userAuth()}>Send</button>
-      </> : "You're already logged in"}
+    <> { props.user == null ? <>
+      <div className={styles.main}>
+        <div className={styles.contentArea}>
+          <input className={styles.input} ref={inputUsername} placeholder="Username"></input>
+          <input className={styles.input} ref={inputPassword} placeholder="Password"></input>
+          <button className={styles.btn} onClick={() => userAuth()}>Login</button>
+        </div>
+      </div>
+    </> : <div className={styles.main}>
+        <div className={styles.contentArea}>
+          <span>Logged in as <b><i>{props.user.username.charAt(0).toUpperCase() + props.user.username.slice(1)}</i></b>.</span>
+        </div>
+      </div>}
     </>
   )
 }
