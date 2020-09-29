@@ -7,7 +7,8 @@ import Edit from '../../Containers/Post/Edit'
 import Login from '../../Components/Login'
 import AddPost from '../../Components/AddPost'
 import Posts from '../../Components/Posts'
-import { useQuery } from '@apollo/react-hooks';
+import Footer from '../../Components/Footer'
+import { useQuery } from '@apollo/react-hooks'
 import GET_POSTS from '../../Queries/GET_DATA'
 import '../../index.css';
 
@@ -68,6 +69,7 @@ export default function Home() {
                 <Posts posts={posts} setPosts={setPosts} data={data} loading={loading} client={client} setUser={setUser} user={user} />
               </Route>
             </Switch>
+            <Footer />
           </div>
         </Router>
       </div>
