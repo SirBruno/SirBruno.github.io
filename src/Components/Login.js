@@ -18,6 +18,10 @@ export default function (props) {
       axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
     }
 
+    if(tryLoggin.data === "Incorrect username and password combination!") {
+      document.getElementById("errorMessage").innerHTML = `<p class="loginErrorMessage">${tryLoggin.data}</p>`;
+    }
+
     return tryLoggin;
   }
 
@@ -26,8 +30,10 @@ export default function (props) {
       <div className={styles.main}>
         <div className={styles.contentArea}>
           <input className={styles.input} ref={inputUsername} placeholder="Username"></input>
-          <input className={styles.input} ref={inputPassword} placeholder="Password"></input>
+          <input type="password" className={styles.input} ref={inputPassword} placeholder="Password"></input>
           <button className={styles.btn} onClick={() => userAuth()}>Login</button>
+          <div id="errorMessage">
+          </div>
         </div>
       </div>
     </> : <div className={styles.main}>

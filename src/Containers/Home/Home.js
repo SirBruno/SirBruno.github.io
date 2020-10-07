@@ -8,6 +8,7 @@ import Login from '../../Components/Login'
 import AddPost from '../../Components/AddPost'
 import Posts from '../../Components/Posts'
 import Footer from '../../Components/Footer'
+import Register from '../../Components/Register'
 import { useQuery } from '@apollo/react-hooks'
 import GET_POSTS from '../../Queries/GET_DATA'
 import '../../index.css';
@@ -35,6 +36,7 @@ export default function Home() {
               <Link to="/">Home</Link>
               <Link to="/post">Post</Link>
               <Link to="/addpost">Add Post</Link>
+              <Link to="/register">Register</Link>
               <Link to="/login">Login</Link>
             </nav>
               {user != null ? <div className="headerUserArea">
@@ -55,6 +57,9 @@ export default function Home() {
             <Switch>
               <Route path="/login">
                 <Login setUser={setUser} user={user} loading={loading} />
+              </Route>
+              <Route path="/register">
+                <Register setUser={setUser} user={user} loading={loading} />
               </Route>
               <Route path="/addpost">
                 <AddPost setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
