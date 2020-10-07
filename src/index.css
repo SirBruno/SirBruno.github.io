@@ -69,3 +69,22 @@ body {
   line-height: 20px;
   display: initial;
 }
+
+.loginErrorMessage {
+  color: #FF2D00;
+  text-align: center;
+  animation: fadein .3s;
+  font-weight: 400;
+}
+
+.loginErrorMessage:before {
+  content: '\f057';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 600;
+  margin-right: 3px;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
