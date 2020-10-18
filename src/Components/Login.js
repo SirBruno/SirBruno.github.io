@@ -38,7 +38,7 @@ export default function (props) {
       </div>
     </> : <div className={styles.main}>
         <div className={styles.contentArea}>
-          <span>Logged in as <b><i>{props.user.username.charAt(0).toUpperCase() + props.user.username.slice(1)}</i></b>.</span>
+          <span>Logged in as <b><i>{props.user.nickname.charAt(0).toUpperCase() + props.user.nickname.slice(1)}</i></b>.</span>
         </div>
       </div>}
     </>
