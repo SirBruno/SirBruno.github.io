@@ -44,7 +44,7 @@ export default function Home() {
                   <p>Logged in as</p>
                 </div>
                 <div className="username">
-                  <p>{user.username}</p>
+                  <p>{user.nickname}</p>
                 </div>
                 <div></div>
               </div> : <div className="headerUserArea">
