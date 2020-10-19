@@ -73,7 +73,7 @@ export default function Single(props) {
               }
             }
         `,
-          }).then(res => [...arr, res.data.comment])
+          }).then(res => [...arr, res.data.comment.commentBody])
         )
 
         Promise.all(x).then((values) => {
@@ -171,7 +171,7 @@ export default function Single(props) {
     } else {
       document.getElementById("req-response").innerText = 'Comment added successfully!'
       updatePost(post.id, comment.id)
-      setComments([...comments, comment.commentBody])
+      setComments(comments == null ? [comment.commentBody] : [...comments, comment.commentBody])
       props.refetch()
     }
   }
@@ -208,9 +208,9 @@ export default function Single(props) {
           <textarea className="SinglePostComment" ref={commentBody}></textarea>
           <button className="SinglePostBtn" onClick={() => addComment()}>Submit</button>
           <p id="req-response"></p>
-          <div>{
+          <div className="SingleComments">{
             comments != null ? comments.map(x => <div>
-              <textarea disabled className="SinglePostComment">{x[0].commentBody}</textarea>
+              <textarea disabled className="SinglePostComment">{x}</textarea>
             </div>) : null  
           }</div>
         </div>
