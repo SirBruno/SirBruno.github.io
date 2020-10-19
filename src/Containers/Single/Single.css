@@ -81,3 +81,34 @@ a.SingleEditPost:hover {
   color: #fff;
   transition: .3s;
 }
+
+.SingleComponent .SinglePostComment {
+  border: 2px solid red;
+  width: 100%;
+  resize: none;
+  border: none;
+  padding: 20px;
+  border-radius: 3px;
+  font-size: 16px;
+  outline: none;
+  background: #131313;
+  color: #777;
+  transition: .3s;
+}
+
+.SingleComponent .SinglePostBtn {
+  border: none;
+  background: #000;
+  padding: 20px;
+  color: rgba(255, 255, 255, .5);
+  outline: none;
+  font-size: 16px;
+  border-radius: 3px;
+  transition: .3s;
+}
+
+.SingleComponent .SinglePostBtn:hover {
+  color: #fff;
+  transition: .3s;
+  cursor: pointer;
+}
