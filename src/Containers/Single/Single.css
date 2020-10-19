@@ -94,6 +94,7 @@ a.SingleEditPost:hover {
   background: #131313;
   color: #777;
   transition: .3s;
+  font-family: 'Fira Sans', sans-serif;
 }
 
 .SingleComponent .SinglePostBtn {
@@ -111,4 +112,9 @@ a.SingleEditPost:hover {
   color: #fff;
   transition: .3s;
   cursor: pointer;
+}
+
+.SingleComponent .SingleComments {
+  display: grid;
+  row-gap: 10px;
 }
