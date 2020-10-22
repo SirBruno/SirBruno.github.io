@@ -38,7 +38,7 @@ export default function AddPost(props) {
     const res = await client.mutate({
       variables: {
         postTitle: dataTitle.current.value,
-        author: props.user.username,
+        author: props.user.nickname,
         postBody: postBody,
         userId: props.user._id,
         categoryId: dataCategoryId.current.value,
