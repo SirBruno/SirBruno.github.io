@@ -118,3 +118,13 @@ a.SingleEditPost:hover {
   display: grid;
   row-gap: 10px;
 }
+
+.SingleLikeButton {
+  color: #C30F0E;
+  padding-top: 10px;
+  font-size: 35px;
+}
+
+.SingleLikeButton:hover {
+  cursor: pointer;
+}

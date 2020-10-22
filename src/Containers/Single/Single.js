@@ -20,7 +20,7 @@ export default function Single(props) {
   }
 
   console.log(props.user?._id);
-  console.log(post.userId);
+  console.log(post.likedBy);
 
   useEffect(() => {
     const getPost = async () => {
@@ -137,6 +137,80 @@ export default function Single(props) {
     props.refetch()
   }
 
+  const addLike = async (_id, userId) => {
+
+    if (post.likedBy.includes(userId) === false) {
+      post.likedBy.push(userId)
+      const res = await client.mutate({
+        variables: {
+          _id,
+          likedBy: post.likedBy,
+          postLikes: ++post.postLikes
+        },
+        mutation: gql`
+          mutation updatePost(
+            $_id: String,
+            $likedBy: [String],
+            $postLikes: Int
+          ){
+            updatePost(
+              _id: $_id,
+              likedBy: $likedBy
+              postLikes: $postLikes
+            ) {
+              id
+            }
+          }
+      `,
+      })
+
+      if (res.data.updatePost.id) {
+        console.log('Post Liked :)')
+        console.log(post);
+      }
+
+      props.refetch()
+    } else {
+
+      // ------------------------------
+      let arr = post.likedBy
+      let index = arr.indexOf(userId);
+      if (index > -1) {
+        arr.splice(index, 1);
+      }
+      // ------------------------------
+
+      const res = await client.mutate({
+        variables: {
+          _id,
+          likedBy: arr,
+          postLikes: --post.postLikes
+        },
+        mutation: gql`
+          mutation updatePost(
+            $_id: String,
+            $likedBy: [String],
+            $postLikes: Int
+          ){
+            updatePost(
+              _id: $_id,
+              likedBy: $likedBy
+              postLikes: $postLikes
+            ) {
+              id
+            }
+          }
+      `,
+      })
+
+      if (res.data.updatePost.id) {
+        console.log('Post Unliked :(')
+      }
+
+      props.refetch()
+    }
+  }
+
   console.log(commentBody.current?.value)
 
   const addComment = async () => {
@@ -193,6 +267,16 @@ export default function Single(props) {
               <i className="SingleMetaTitle">Date: <b>{post.createdAt}</b></i>
               <i className="SingleMetaTitle">Category: <b>{post.categoryId}</b></i>
               <i className="SingleMetaTitle">Tags: <b>{post.postTags}</b></i>
+              <i className="SingleMetaTitle">Likes: <b>{post.postLikes}</b></i>
+              {props.user?._id ?
+                <div>
+                  {post.likedBy.includes(props.user?._id) === false
+                    ? <i onClick={() => addLike(post.id, props.user?._id)} className="SingleLikeButton far fa-heart"></i>
+                    : <i onClick={() => addLike(post.id, props.user?._id)} className="SingleLikeButton fas fa-heart"></i>
+                  }
+                </div>
+                : null
+              }
               <br />
             </div>
             {props.user?._id === post.userId ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i class="far fa-edit"></i> Edit post</a> : null}
@@ -211,7 +295,7 @@ export default function Single(props) {
           <div className="SingleComments">{
             comments != null ? comments.map(x => <div>
               <textarea disabled className="SinglePostComment">{x}</textarea>
-            </div>) : null  
+            </div>) : null
           }</div>
         </div>
       </div>

@@ -82,7 +82,7 @@ export default function Single(props) {
         _id,
         postTitle: dataTitle.current.value,
         postBody: postBody,
-        author: props.user?.username,
+        author: props.user?.nickname,
         postImageURL: dataPostImageURL.current.value,
         userId: props.user?._id,
         categoryId: categoryId.current.value,
