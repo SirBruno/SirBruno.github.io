@@ -9,6 +9,7 @@ import AddPost from '../../Components/AddPost'
 import Posts from '../../Components/Posts'
 import Footer from '../../Components/Footer'
 import Register from '../../Components/Register'
+import Profile from '../../Components/Profile'
 import { useQuery } from '@apollo/react-hooks'
 import GET_POSTS from '../../Queries/GET_DATA'
 import '../../index.css';
@@ -21,7 +22,7 @@ export default function Home() {
   const [posts, setPosts] = useState([])
   const [user, setUser] = useState(null)
 
-  const { loading, error, data, refetch } = useQuery(GET_POSTS(8));
+  const { loading, error, data, refetch } = useQuery(GET_POSTS(19));
 
   if (error) console.log(error)
 
@@ -34,6 +35,7 @@ export default function Home() {
               <div className="logo">LOGO</div>
               <nav className="mainNav">
               <Link to="/">Home</Link>
+              <Link to="/profile">Profile</Link>
               <Link to="/post">Post</Link>
               <Link to="/addpost">Add Post</Link>
               <Link to="/register">Register</Link>
@@ -66,6 +68,9 @@ export default function Home() {
               </Route>
               <Route path="/post">
                 <Post setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
+              </Route>
+              <Route path="/profile">
+                <Profile setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
               </Route>
               <Route path="/edit">
                 <Edit setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
