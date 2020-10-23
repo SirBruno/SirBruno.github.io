@@ -153,6 +153,47 @@ export default function Single(props) {
     if (deletedId) {
       document.getElementById("updatePostSuccess").innerText = 'Delete successful!'
     }
+
+    const fetchUser = await client.query({
+      variables: { _id: props.user?._id },
+      query: gql`
+      query user($_id: String){
+        user(_id: $_id) {
+          id
+          userPosts
+        }
+      }
+  `,
+    })
+
+    // ------------------------------
+    let arr = fetchUser.data.user.userPosts
+    let index = arr.indexOf(_id);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    // ------------------------------
+
+    await client.mutate({
+      variables: {
+        _id: props.user._id,
+        userPosts: arr
+      },
+      mutation: gql`
+        mutation updateUser(
+          $_id: String,
+          $userPosts: [String]
+        ){
+          updateUser(
+            _id: $_id,
+            userPosts: $userPosts
+          ) {
+            id
+          }
+        }
+    `,
+    })
+
     props.refetch()
   }
 
@@ -161,7 +202,7 @@ export default function Single(props) {
   } else return (
     <div className={styles.main}>
       <div className={styles.contentArea}>
-        <>{(props.user?._id === post.userId) ? <>
+        <>{(props.user?._id === post.userId) || (props.user?.userPermission === 'ADMIN') ? <>
           <label className={styles.label}>Post title
             <input className={styles.input} ref={dataTitle} defaultValue={post.postTitle} />
           </label>

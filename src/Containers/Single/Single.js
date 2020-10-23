@@ -279,7 +279,7 @@ export default function Single(props) {
               }
               <br />
             </div>
-            {props.user?._id === post.userId ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i class="far fa-edit"></i> Edit post</a> : null}
+            {(props.user?._id === post.userId) || (props.user?.userPermission === 'ADMIN') ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i class="far fa-edit"></i> Edit post</a> : null}
           </div>
         </div>
         <div>

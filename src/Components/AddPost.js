@@ -97,8 +97,48 @@ export default function AddPost(props) {
     `,
     })
 
+    const fetchUser = await client.query({
+      variables: { _id: props.user?._id },
+      query: gql`
+      query user($_id: String){
+        user(_id: $_id) {
+          id
+          userPosts
+        }
+      }
+  `,
+    })
+
+    console.log("55555555555555555555555555")
+    console.log(fetchUser.data.user.userPosts)
+    console.log(res.data.addPost.id)
+
+    const resUser = await client.mutate({
+      variables: {
+        _id: props.user._id,
+        userPosts: [...fetchUser.data.user.userPosts, res.data.addPost.id]
+      },
+      mutation: gql`
+        mutation updateUser(
+          $_id: String,
+          $userPosts: [String]
+        ){
+          updateUser(
+            _id: $_id,
+            userPosts: $userPosts
+          ) {
+            id
+            userPosts
+          }
+        }
+    `,
+    })
+
+    console.log("88888888888888888888888888888888888")
+    console.log(resUser.data.updateUser)
+
     const post = await res.data.addPost;
-    if (post.id == null) {
+    if ((post.id == null) || (resUser.data.updateUser.id == null)) {
       document.getElementById("req-response").innerText = 'ERROR'
     } else {
       document.getElementById("req-response").innerText = 'Post added successfully!'
