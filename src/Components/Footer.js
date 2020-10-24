@@ -24,7 +24,7 @@ export default function Footer() {
         <div>
           <h4 className={styles.header}>Praesent</h4>
           <p className={styles.text}>Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat.</p>
-          <a href="https://github.com/SirBruno/archetype" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+          <a href="https://github.com/SirBruno/archetype" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
         </div>
       </div>
       <div>
