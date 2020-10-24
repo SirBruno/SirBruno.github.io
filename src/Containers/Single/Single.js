@@ -8,7 +8,6 @@ import ReactHtmlParser from 'react-html-parser';
 
 export default function Single(props) {
 
-
   const { topicId } = useParams();
   const client = useApolloClient();
   const [post, setPost] = useState(0);
@@ -262,7 +261,9 @@ export default function Single(props) {
           <div className="SingePostTitleArea">
             <h3 className="singlePostTitle">{post.postTitle}</h3>
             <div className="SinglePostMeta">
-              <p className="SingleMetaTitle">Posted by: <span className="SinglePostAuthor">{post.author}</span></p>
+              <p className="SingleMetaTitle">Posted by: <span className="SinglePostAuthor">
+                <a className="SingleEditPost" href={`/singleprofile/${post.userId}`}>{post.author}</a>
+              </span></p>
               <br />
               <i className="SingleMetaTitle">Date: <b>{post.createdAt}</b></i>
               <i className="SingleMetaTitle">Category: <b>{post.categoryId}</b></i>

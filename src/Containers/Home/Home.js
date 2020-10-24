@@ -9,10 +9,11 @@ import AddPost from '../../Components/AddPost'
 import Posts from '../../Components/Posts'
 import Footer from '../../Components/Footer'
 import Register from '../../Components/Register'
-import Profile from '../../Components/Profile'
+import SingleProfile from '../Single/SingleProfile'
 import { useQuery } from '@apollo/react-hooks'
 import GET_POSTS from '../../Queries/GET_DATA'
 import '../../index.css';
+import axios from 'axios'
 
 const uri = 'http://localhost:4000/graphql';
 const client = new ApolloClient({ uri });
@@ -21,6 +22,14 @@ export default function Home() {
   
   const [posts, setPosts] = useState([])
   const [user, setUser] = useState(null)
+
+  if (user == null) {
+		axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
+  }
+  
+  if (user) {
+    console.log(user._id)
+  }
 
   const { loading, error, data, refetch } = useQuery(GET_POSTS(19));
 
@@ -35,7 +44,7 @@ export default function Home() {
               <div className="logo">LOGO</div>
               <nav className="mainNav">
               <Link to="/">Home</Link>
-              <Link to="/profile">Profile</Link>
+              <Link to={`/singleprofile${user?._id ? '/'+user?._id : ''}`}>Profile</Link>
               <Link to="/post">Post</Link>
               <Link to="/addpost">Add Post</Link>
               <Link to="/register">Register</Link>
@@ -69,8 +78,8 @@ export default function Home() {
               <Route path="/post">
                 <Post setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
               </Route>
-              <Route path="/profile">
-                <Profile setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
+              <Route path="/singleprofile">
+                <SingleProfile setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
               </Route>
               <Route path="/edit">
                 <Edit setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />

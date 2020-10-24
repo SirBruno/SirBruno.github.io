@@ -24,6 +24,23 @@
   max-width: 1140px;
   width: 100%;
   margin: 0 auto;
+  align-items: center;
+}
+
+.contentMainNotFound {
+  box-shadow: 0 0 14px rgba(0, 0, 0, .6);
+  background: #171717;
+  border-radius: 3px;
+  overflow: hidden;
+  color: #fff;
+  transition: .3s;
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 1140px;
+  width: 100%;
+  margin: 0 auto;
+  align-items: center;
+  min-height: 500px;
 }
 
 .contentFirstCol {
@@ -74,4 +91,23 @@
   text-align: center;
   padding: 3px;
   box-sizing: border-box;
+}
+
+.postLinks {
+  display: block;
+  text-decoration: none;
+  color: #777;
+  transition: .3s;
+  margin: 5px 0;
+}
+
+.postLinks:hover {
+  color: #fff;
+  transition: .3s;
+}
+
+.userPosts {
+  text-align: left;
+  padding: 50px;
+  margin: 50px 0;
 }
