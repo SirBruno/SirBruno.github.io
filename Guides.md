@@ -16,20 +16,21 @@
 
 ## 3. Calcular userExp do usuário
 
-  const getExp = async () => {
+```
+const getExp = async () => {
     const fetchPosts = await client.query({
       variables: { _id: topicId },
       query: gql`
       query user($_id: String){
-          user(_id: $_id) {
-            id
-            userPosts
-            userImageURL
-            nickname
-            userDescription
-          }
+        user(_id: $_id) {
+          id
+          userPosts
+          userImageURL
+          nickname
+          userDescription
         }
-      `,
+      }
+  `,
     })
 
     if (fetchPosts.data.user?.id) {
@@ -74,3 +75,5 @@
       xxx()
     }
   }
+
+```
