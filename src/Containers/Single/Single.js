@@ -18,8 +18,8 @@ export default function Single(props) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
   }
 
-  console.log(props.user?._id);
-  console.log(post.likedBy);
+  // console.log(props.user?._id);
+  // console.log(post.likedBy);
 
   useEffect(() => {
     const getPost = async () => {
@@ -58,7 +58,6 @@ export default function Single(props) {
     if ((post.postComments?.length > 0) && comments == null) {
 
       const fetchComments = async () => {
-        let arr = [];
 
         let x = await post.postComments.map(id =>
           client.query({
@@ -72,7 +71,7 @@ export default function Single(props) {
               }
             }
         `,
-          }).then(res => [...arr, res.data.comment.commentBody])
+          }).then(res => res.data.comment)
         )
 
         Promise.all(x).then((values) => {
@@ -210,7 +209,7 @@ export default function Single(props) {
     }
   }
 
-  console.log(commentBody.current?.value)
+  // console.log(commentBody.current?.value)
 
   const addComment = async () => {
 
@@ -244,12 +243,75 @@ export default function Single(props) {
     } else {
       document.getElementById("req-response").innerText = 'Comment added successfully!'
       updatePost(post.id, comment.id)
-      setComments(comments == null ? [comment.commentBody] : [...comments, comment.commentBody])
+      console.log(comment)
+      setComments(comments == null ? [comment] : [...comments, comment])
       props.refetch()
     }
   }
 
-  console.log(comments)
+  const deletePost = async (_id) => {
+
+    let arr = [];
+
+    for (let i = 0; i < comments.length; i++) {
+      arr.push(comments[i].id)
+    }
+
+    const res = await client.mutate({
+      variables: {
+        _id,
+      },
+      mutation: gql`
+        mutation deleteComment(
+          $_id: String,
+        ){
+          deleteComment(
+            _id: $_id,
+          ) {
+            id
+          }
+        }
+    `,
+    })
+
+    // ------------------------------
+    let index = arr.indexOf(_id);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    // ------------------------------
+
+    const postRes = await client.mutate({
+      variables: {
+        _id: post.id,
+        postComments: arr,
+      },
+      mutation: gql`
+        mutation updatePost(
+          $_id: String,
+          $postComments: [String],
+        ){
+          updatePost(
+            _id: $_id,
+            postComments: $postComments
+          ) {
+            id
+          }
+        }
+    `,
+    })
+
+    if (res.data.deleteComment.id && postRes.data.updatePost.id) {
+      console.log('Comment deleted.')
+      document.getElementById("SingleComments").removeChild(document.getElementById(_id))
+    }
+
+    props.refetch()
+  }
+
+  if (comments) {
+    console.log(comments)
+  }
 
   if (post === 0) {
     return <h3>Loading...</h3>
@@ -293,10 +355,15 @@ export default function Single(props) {
           <textarea className="SinglePostComment" ref={commentBody}></textarea>
           <button className="SinglePostBtn" onClick={() => addComment()}>Submit</button>
           <p id="req-response"></p>
-          <div className="SingleComments">{
-            comments != null ? comments.map(x => <div>
-              <textarea disabled className="SinglePostComment">{x}</textarea>
-            </div>) : null
+          <div id="SingleComments" className="SingleComments">{
+            comments != null ? comments.reverse().map(x =>
+              <div id={x.id} key={x.id} className="SinglePostComment">
+                <div className="SinglePostCommentTop">
+                  <span className="SingleCommentUserId">{x.userId}</span>
+                  <span className="SingleCommentDel" onClick={() => deletePost(x.id)}><i class="fas fa-times"></i></span>
+                </div>
+                <textarea rows="5" disabled defaultValue={x.commentBody}></textarea>
+              </div>) : null
           }</div>
         </div>
       </div>

@@ -48,7 +48,6 @@ export default function Home() {
               <nav className="mainNav">
                 <Link to="/">Home</Link>
                 <Link to={`/singleprofile${user?._id ? '/' + user?._id : ''}`}>Profile</Link>
-                <Link to="/post">Post</Link>
                 <Link to="/addpost">Add Post</Link>
                 <Link to="/register">Register</Link>
                 <Link to="/login">Login</Link>
