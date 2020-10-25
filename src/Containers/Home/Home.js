@@ -14,19 +14,20 @@ import { useQuery } from '@apollo/react-hooks'
 import GET_POSTS from '../../Queries/GET_DATA'
 import '../../index.css';
 import axios from 'axios'
+import logo from '../../assets/studium-logo.png'
 
 const uri = 'http://localhost:4000/graphql';
 const client = new ApolloClient({ uri });
 
 export default function Home() {
-  
+
   const [posts, setPosts] = useState([])
   const [user, setUser] = useState(null)
 
   if (user == null) {
-		axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
+    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
   }
-  
+
   if (user) {
     console.log(user._id)
   }
@@ -41,15 +42,17 @@ export default function Home() {
         <Router>
           <div>
             <header className="header">
-              <div className="logo">LOGO</div>
+              <div className="logo">
+                <img src={logo} alt="logo" />
+              </div>
               <nav className="mainNav">
-              <Link to="/">Home</Link>
-              <Link to={`/singleprofile${user?._id ? '/'+user?._id : ''}`}>Profile</Link>
-              <Link to="/post">Post</Link>
-              <Link to="/addpost">Add Post</Link>
-              <Link to="/register">Register</Link>
-              <Link to="/login">Login</Link>
-            </nav>
+                <Link to="/">Home</Link>
+                <Link to={`/singleprofile${user?._id ? '/' + user?._id : ''}`}>Profile</Link>
+                <Link to="/post">Post</Link>
+                <Link to="/addpost">Add Post</Link>
+                <Link to="/register">Register</Link>
+                <Link to="/login">Login</Link>
+              </nav>
               {user != null ? <div className="headerUserArea">
                 <div className="loggedInUser">
                   <p>Logged in as</p>
@@ -59,11 +62,11 @@ export default function Home() {
                 </div>
                 <div></div>
               </div> : <div className="headerUserArea">
-                <div className="username">
-                  <p>Not logged in</p>
-                </div>
-                <div></div>
-              </div>}
+                  <div className="username">
+                    <p>Not logged in</p>
+                  </div>
+                  <div></div>
+                </div>}
             </header>
             <Switch>
               <Route path="/login">
