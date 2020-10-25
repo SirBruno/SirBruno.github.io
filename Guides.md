@@ -2,6 +2,7 @@
 
 ## 1. Registro
 **Endpoint**: POST /register
+
 **Body**:  
 
 	{
