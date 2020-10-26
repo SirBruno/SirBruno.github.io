@@ -15,6 +15,8 @@ export default function Single(props) {
   const commentBody = React.createRef();
   const reportTitle = React.createRef();
   const reportBody = React.createRef();
+  const reportTitleComment = React.createRef();
+  const reportBodyComment = React.createRef();
 
   if (props.user == null) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
@@ -349,6 +351,44 @@ export default function Single(props) {
     props.refetch()
   }
 
+  const addReportComment = async (id) => {
+
+    await client.mutate({
+      variables: {
+        commentId: id,
+        userId: props.user?._id,
+        reportTitle: reportTitleComment.current.value,
+        reportBody: reportBodyComment.current.value,
+        solved: false,
+      },
+      mutation: gql`
+        mutation addReport(
+          $commentId: String
+          $userId: String
+          $reportTitle: String
+          $reportBody: String
+          $solved: Boolean
+        ){
+          addReport(
+            commentId: $commentId
+            userId: $userId
+            reportTitle: $reportTitle
+            reportBody: $reportBody
+            solved: $solved
+          ) {
+            id
+          }
+        }
+    `,
+    }).then(x => {
+      if (x.data.addReport.id) {
+        document.getElementById(`reportAreaRes${id}`).innerText = "Report Added."
+      }
+    }).catch(e => console.log(e))
+
+    props.refetch()
+  }
+
   if (comments) {
     console.log(comments)
   }
@@ -408,13 +448,26 @@ export default function Single(props) {
           <p id="req-response"></p>
           <div id="SingleComments" className="SingleComments">{
             comments != null ? comments.reverse().map(x =>
-              <div id={x.id} key={x.id} className="SinglePostComment">
-                <div className="SinglePostCommentTop">
-                  <span className="SingleCommentUserId">{x.userId}</span>
-                  <span className="SingleCommentDel" onClick={() => deletePost(x.id)}><i class="fas fa-times"></i></span>
+              <div>
+                <div id={x.id} key={x.id} className="SinglePostComment">
+                  <div className="SinglePostCommentTop">
+                    <span className="SingleCommentUserId">{x.userId}</span>
+                    <span className="SingleCommentDel" onClick={() => deletePost(x.id)}><i class="fas fa-times"></i></span>
+                  </div>
+                  <textarea rows="5" disabled defaultValue={x.commentBody}></textarea>
                 </div>
-                <textarea rows="5" disabled defaultValue={x.commentBody}></textarea>
-              </div>) : null
+                {props.user?._id ?
+                  <div className="reportArea">
+                    <h3>Report this comment</h3>
+                    <input ref={reportTitleComment} className="reportTitle" placeholder="Report title"></input>
+                    <textarea ref={reportBodyComment} className="reportBody" placeholder="Describe your report..."></textarea>
+                    <button className="btn" onClick={() => addReportComment(x.id)}>Send</button>
+                    <p id={`reportAreaRes${x.id}`}></p>
+                  </div>
+                  : null
+                }
+              </div>
+            ) : null
           }</div>
         </div>
       </div>
