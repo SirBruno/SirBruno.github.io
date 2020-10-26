@@ -179,3 +179,66 @@ a.SingleEditPost:hover {
   cursor: pointer;
   color: #fff;
 }
+
+.reportArea {
+  /* border: 2px solid red; */
+  display: grid;
+  row-gap: 10px;
+  font-family: 'Fira Sans', sans-serif !important;
+  padding: 40px 20px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, .4);
+  border-radius: 3px;
+  margin: 50px 0;
+}
+
+.reportArea h3 {
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.reportArea .reportTitle {
+  border: none;
+  padding: 20px;
+  border-radius: 3px;
+  font-size: 16px;
+  outline: none;
+  background: #131313;
+  color: #fff;
+  transition: .3s;
+  font-family: 'Fira Sans', sans-serif !important;
+}
+
+.reportArea .reportBody {
+  border: none;
+  padding: 20px;
+  border-radius: 3px;
+  font-size: 16px;
+  outline: none;
+  background: #131313;
+  color: #fff;
+  transition: .3s;
+  resize: none;
+  font-family: 'Fira Sans', sans-serif !important;
+}
+
+.btn {
+  border: none;
+  background: #000;
+  padding: 20px;
+  color: rgba(255, 255, 255, .5);
+  outline: none;
+  font-size: 16px;
+  border-radius: 3px;
+  transition: .3s;
+  font-family: 'Fira Sans', sans-serif !important;
+}
+
+.btn:hover {
+  color: #fff;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.reportArea #reportAreaRes {
+  text-align: center;
+}

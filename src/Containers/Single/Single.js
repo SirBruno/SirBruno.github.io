@@ -13,6 +13,8 @@ export default function Single(props) {
   const [post, setPost] = useState(0);
   const [comments, setComments] = useState(null);
   const commentBody = React.createRef();
+  const reportTitle = React.createRef();
+  const reportBody = React.createRef();
 
   if (props.user == null) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
@@ -309,6 +311,44 @@ export default function Single(props) {
     props.refetch()
   }
 
+  const addReport = async () => {
+
+    await client.mutate({
+      variables: {
+        postId: post.id,
+        userId: props.user?._id,
+        reportTitle: reportTitle.current.value,
+        reportBody: reportBody.current.value,
+        solved: false,
+      },
+      mutation: gql`
+        mutation addReport(
+          $postId: String
+          $userId: String
+          $reportTitle: String
+          $reportBody: String
+          $solved: Boolean
+        ){
+          addReport(
+            postId: $postId
+            userId: $userId
+            reportTitle: $reportTitle
+            reportBody: $reportBody
+            solved: $solved
+          ) {
+            id
+          }
+        }
+    `,
+    }).then(x => {
+      if (x.data.addReport.id) {
+        document.getElementById("reportAreaRes").innerText = "Report Added."
+      }
+    }).catch(e => console.log(e))
+
+    props.refetch()
+  }
+
   if (comments) {
     console.log(comments)
   }
@@ -345,6 +385,17 @@ export default function Single(props) {
             {(props.user?._id === post.userId) || (props.user?.userPermission === 'ADMIN') ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i class="far fa-edit"></i> Edit post</a> : null}
           </div>
         </div>
+        {
+          props.user?._id ?
+            <div className="reportArea">
+              <h3>Report this post</h3>
+              <input ref={reportTitle} className="reportTitle" placeholder="Report title"></input>
+              <textarea ref={reportBody} className="reportBody" placeholder="Describe your report..."></textarea>
+              <button className="btn" onClick={() => addReport()}>Send</button>
+              <p id="reportAreaRes"></p>
+            </div>
+            : null
+        }
         <div>
           <div className="SinglePostBody">{ReactHtmlParser(post.postBody)}</div>
         </div>
