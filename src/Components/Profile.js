@@ -58,13 +58,26 @@ export default function Profile(props) {
         `,
           })
 
+          // incrementa o "counter" lá em cima
           counter++;
+
+          // soma o valor de curtidas do post na variável "lel"
           lel += postRes.data.post.likedBy.length
+
+          // bota um objeto com id e título de um post no vetor "posts" lá em cima
           posts.push({ id: postRes.data.post.id, postTitle: postRes.data.post.postTitle })
 
+          // se o estado "stuff" tiver vazio, quer dizer que o componente tá montando pela primeira vez
           if (stuff === null) {
+
+            // se "counter" for menor que o número de posts do usuário, define o estado como "lel"
+            // lembrando, "lel" é o valor acumulado atual do número de curtidas que o post tem
             if (counter <= fetchPosts.data.user.userPosts.length) {
+
+              // define o estado com o cálculo de exp do post a cada iteração
               setStuff(lel)
+              
+              // define o estado como todos os posts do usuário, cortado pra no máximo 10
               setUserPosts(posts.slice(0, 10))
             }
           }
