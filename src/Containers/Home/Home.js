@@ -25,7 +25,7 @@ export default function Home() {
   const [user, setUser] = useState(null)
 
   if (user == null) {
-    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
+    axios.get('https://archetypeofficial.herokuapp.com/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
   }
 
   if (user) {

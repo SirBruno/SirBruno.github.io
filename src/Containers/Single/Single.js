@@ -437,9 +437,9 @@ export default function Single(props) {
               <br />
             </div>
             {(props.user?._id === post.userId) || (props.user?.userPermission === 'ADMIN') ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i class="far fa-edit"></i> Edit post</a> : null}
-            <br />
-            <br />
-            <button onClick={() => toggleReportPostArea()}>Report post</button>
+            {props.user?._id ?
+              <button className="toggleReport" onClick={() => toggleReportPostArea()}>Report post</button>
+              : null}
           </div>
         </div>
         {
@@ -470,14 +470,18 @@ export default function Single(props) {
                   <div className="SinglePostCommentTop">
                     <span className="SingleCommentUserId">{x.userId}</span>
                     <div>
-                      <span><button onClick={() => toggleReportComment(`comment${x.id}`)}>Report comment</button></span>
-                      <span className="SingleCommentDel" onClick={() => deletePost(x.id)}><i class="fas fa-times"></i></span>
+                      {props.user?._id ?
+                        <span><button className="toggleReportComment" onClick={() => toggleReportComment(`comment${x.id}`)}>Report comment</button></span>
+                        : null}
+                      {(props.user?._id) && (props.user?.userPermission === 'ADMIN') ?
+                        <span className="SingleCommentDel" onClick={() => deletePost(x.id)}><i class="fas fa-times"></i></span>
+                        : null}
                     </div>
                   </div>
                   <textarea rows="5" disabled defaultValue={x.commentBody}></textarea>
                 </div>
                 {props.user?._id ?
-                  <div id={`comment${x.id}`} style={{display: 'none'}} className="reportArea">
+                  <div id={`comment${x.id}`} style={{ display: 'none' }} className="reportArea">
                     <h3>Report this comment</h3>
                     <input ref={reportTitleComment} className="reportTitle" placeholder="Report title"></input>
                     <textarea ref={reportBodyComment} className="reportBody" placeholder="Describe your report..."></textarea>

@@ -8,14 +8,14 @@ export default function (props) {
   const inputPassword = React.createRef();
 
   if (props.user == null) {
-    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+    axios.get('https://archetypeofficial.herokuapp.com/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
   }
 
   const userAuth = async () => {
-    const tryLoggin = await axios.get(`http://localhost:4000/login?username=${inputUsername.current.value}&password=${inputPassword.current.value}`, { withCredentials: true });
+    const tryLoggin = await axios.get(`https://archetypeofficial.herokuapp.com/login?username=${inputUsername.current.value}&password=${inputPassword.current.value}`, { withCredentials: true });
 
     if (props.user == null) {
-      axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+      axios.get('https://archetypeofficial.herokuapp.com/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
     }
 
     if(tryLoggin.data === "Incorrect username and password combination!") {

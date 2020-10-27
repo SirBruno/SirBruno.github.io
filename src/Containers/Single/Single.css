@@ -243,3 +243,43 @@ a.SingleEditPost:hover {
 .reportArea #reportAreaRes {
   text-align: center;
 }
+
+.toggleReport {
+  display: block;
+  margin: 20px 0;
+  border: 0;
+  border-radius: 3px;
+  padding: 10px 20px;
+  background: #000;
+  color: #777;
+  font-family: 'Fira Sans', sans-serif !important;
+  font-weight: 500;
+  font-size: 14px;
+  transition: .3s;
+  outline: none;
+}
+
+.toggleReport:hover {
+  transition: .3s;
+  color: #fff;
+  cursor: pointer;
+}
+
+.toggleReportComment {
+  border: 0;
+  border-radius: 3px;
+  padding: 10px 20px;
+  background: #000;
+  color: #777;
+  font-family: 'Fira Sans', sans-serif !important;
+  font-weight: 500;
+  font-size: 12px;
+  transition: .3s;
+  outline: none;
+}
+
+.toggleReportComment:hover {
+  transition: .3s;
+  color: #fff;
+  cursor: pointer;
+}
