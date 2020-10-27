@@ -16,7 +16,7 @@ import '../../index.css';
 import axios from 'axios'
 import logo from '../../assets/studium-logo.png'
 
-const uri = 'http://localhost:4000/graphql';
+const uri = 'https://archetypeofficial.herokuapp.com/graphql';
 const client = new ApolloClient({ uri });
 
 export default function Home() {
