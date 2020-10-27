@@ -94,6 +94,7 @@ a.SingleEditPost:hover {
   color: #777;
   transition: .3s;
   font-family: 'Fira Sans', sans-serif;
+  box-sizing: border-box;
 }
 
 .SingleComponent .SinglePostCommentTop {

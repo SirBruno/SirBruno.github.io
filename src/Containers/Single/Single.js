@@ -11,6 +11,8 @@ export default function Single(props) {
   const { topicId } = useParams();
   const client = useApolloClient();
   const [post, setPost] = useState(0);
+  const [reportPostArea, setReportPostArea] = useState(false);
+  // const [reportCommentArea, setReportCommentArea] = useState(false);
   const [comments, setComments] = useState(null);
   const commentBody = React.createRef();
   const reportTitle = React.createRef();
@@ -393,6 +395,18 @@ export default function Single(props) {
     console.log(comments)
   }
 
+  const toggleReportPostArea = () => {
+    setReportPostArea(!reportPostArea)
+  }
+
+  const toggleReportComment = (id) => {
+    if (document.getElementById(id).style.display === 'none') {
+      document.getElementById(id).style.display = 'grid'
+    } else {
+      document.getElementById(id).style.display = 'none'
+    }
+  }
+
   if (post === 0) {
     return <h3>Loading...</h3>
   } else return (
@@ -423,10 +437,13 @@ export default function Single(props) {
               <br />
             </div>
             {(props.user?._id === post.userId) || (props.user?.userPermission === 'ADMIN') ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i class="far fa-edit"></i> Edit post</a> : null}
+            <br />
+            <br />
+            <button onClick={() => toggleReportPostArea()}>Report post</button>
           </div>
         </div>
         {
-          props.user?._id ?
+          props.user?._id && reportPostArea ?
             <div className="reportArea">
               <h3>Report this post</h3>
               <input ref={reportTitle} className="reportTitle" placeholder="Report title"></input>
@@ -452,12 +469,15 @@ export default function Single(props) {
                 <div id={x.id} key={x.id} className="SinglePostComment">
                   <div className="SinglePostCommentTop">
                     <span className="SingleCommentUserId">{x.userId}</span>
-                    <span className="SingleCommentDel" onClick={() => deletePost(x.id)}><i class="fas fa-times"></i></span>
+                    <div>
+                      <span><button onClick={() => toggleReportComment(`comment${x.id}`)}>Report comment</button></span>
+                      <span className="SingleCommentDel" onClick={() => deletePost(x.id)}><i class="fas fa-times"></i></span>
+                    </div>
                   </div>
                   <textarea rows="5" disabled defaultValue={x.commentBody}></textarea>
                 </div>
                 {props.user?._id ?
-                  <div className="reportArea">
+                  <div id={`comment${x.id}`} style={{display: 'none'}} className="reportArea">
                     <h3>Report this comment</h3>
                     <input ref={reportTitleComment} className="reportTitle" placeholder="Report title"></input>
                     <textarea ref={reportBodyComment} className="reportBody" placeholder="Describe your report..."></textarea>
