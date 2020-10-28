@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
 
-const GET_POSTS = (x) => gql`
+const GET_POSTS = (x, y) => gql`
 {
   posts (
     pageSize: ${x},
-    # after: "2"
+    after: ${y}
   ) {
     hasMore
     cursor
