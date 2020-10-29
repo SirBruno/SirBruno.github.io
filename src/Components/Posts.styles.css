@@ -148,6 +148,11 @@ img {
   list-style: none;
   text-align: center;
   padding: 20px;
+  align-items: center;
+  position: relative;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
 }
 
 .postPagePagination li {
@@ -174,4 +179,15 @@ img {
   color: #fff;
   transition: .3s;
   cursor: pointer;
+}
+
+.loadSpinner {
+  height: 75vh;
+  align-items: center;
+  display: flex;
+  background: #191919;
+}
+
+.loadSpinner div {
+  margin: 0 auto;
 }
