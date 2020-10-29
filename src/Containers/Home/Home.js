@@ -10,8 +10,8 @@ import Posts from '../../Components/Posts'
 import Footer from '../../Components/Footer'
 import Register from '../../Components/Register'
 import SingleProfile from '../Single/SingleProfile'
-import { useQuery } from '@apollo/react-hooks'
-import GET_POSTS from '../../Queries/GET_DATA'
+// import { useQuery } from '@apollo/react-hooks'
+// import GET_POSTS from '../../Queries/GET_DATA'
 import '../../index.css';
 import axios from 'axios'
 import logo from '../../assets/studium-logo.png'
@@ -32,9 +32,9 @@ export default function Home() {
     console.log(user._id)
   }
 
-  const { loading, error, data, refetch } = useQuery(GET_POSTS(19));
+  // const { loading, error, data, refetch } = useQuery(GET_POSTS(19));
 
-  if (error) console.log(error)
+  // if (error) console.log(error)
 
   return (
     <ApolloProvider client={client}>
@@ -55,6 +55,11 @@ export default function Home() {
               {user != null ? <div className="headerUserArea">
                 <div className="loggedInUser">
                   <p>Logged in as</p>
+                  <a href={
+                    (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ?
+                    "https://archetypeofficial.herokuapp.com/logout?redir=http://localhost:3000/" :
+                    "https://archetypeofficial.herokuapp.com/logout?redir=https://archetype-fe.vercel.app/"
+                  }>Logout</a>
                 </div>
                 <div className="username">
                   <p>{user.nickname}</p>
@@ -69,25 +74,25 @@ export default function Home() {
             </header>
             <Switch>
               <Route path="/login">
-                <Login setUser={setUser} user={user} loading={loading} />
+                <Login setUser={setUser} user={user} />
               </Route>
               <Route path="/register">
-                <Register setUser={setUser} user={user} loading={loading} />
+                <Register setUser={setUser} user={user} />
               </Route>
               <Route path="/addpost">
-                <AddPost setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
+                <AddPost setUser={setUser} user={user} setPosts={setPosts} />
               </Route>
               <Route path="/post">
-                <Post setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
+                <Post setUser={setUser} user={user} setPosts={setPosts} />
               </Route>
               <Route path="/singleprofile">
-                <SingleProfile setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
+                <SingleProfile setUser={setUser} user={user} setPosts={setPosts} />
               </Route>
               <Route path="/edit">
-                <Edit setUser={setUser} user={user} loading={loading} data={data} setPosts={setPosts} refetch={refetch} />
+                <Edit setUser={setUser} user={user} setPosts={setPosts} />
               </Route>
               <Route path="/">
-                <Posts posts={posts} setPosts={setPosts} data={data} loading={loading} client={client} setUser={setUser} user={user} />
+                <Posts posts={posts} setPosts={setPosts} client={client} setUser={setUser} user={user} />
               </Route>
             </Switch>
             <Footer />

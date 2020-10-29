@@ -436,7 +436,7 @@ export default function Single(props) {
               }
               <br />
             </div>
-            {(props.user?._id === post.userId) || (props.user?.userPermission === 'ADMIN') ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i class="far fa-edit"></i> Edit post</a> : null}
+            {(props.user?._id === post.userId) || (props.user?.userPermission === 'ADMIN') ? <a className="SingleEditPost" href={`/edit/${post.id}`}><i className="far fa-edit"></i> Edit post</a> : null}
             {props.user?._id ?
               <button className="toggleReport" onClick={() => toggleReportPostArea()}>Report post</button>
               : null}

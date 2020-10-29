@@ -32,9 +32,6 @@ export default function Single(props) {
     axios.get('https://archetypeofficial.herokuapp.com/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
   }
 
-  console.log(props.user?._id);
-  console.log(post.userId);
-
   const dataTitle = React.createRef();
   const dataPostImageURL = React.createRef();
   const categoryId = React.createRef();
@@ -74,17 +71,14 @@ export default function Single(props) {
 
   const updatePost = async (_id) => {
 
-    // updatedAt: String
-    // createdAt: String
-
     const res = await client.mutate({
       variables: {
         _id,
         postTitle: dataTitle.current.value,
         postBody: postBody,
-        author: props.user?.nickname,
+        author: post.nickname,
         postImageURL: dataPostImageURL.current.value,
-        userId: props.user?._id,
+        userId: post.userId,
         categoryId: categoryId.current.value,
         postStatus: postStatus.current.value,
         postVisibility: postVisibility.current.value,
@@ -119,16 +113,6 @@ export default function Single(props) {
             updatedAt: $updatedAt
           ) {
             id
-            postTitle
-            postBody
-            author
-            postImageURL
-            userId
-            categoryId
-            postStatus
-            postVisibility
-            postTags
-            updatedAt
           }
         }
     `,
@@ -137,7 +121,8 @@ export default function Single(props) {
     if (res.data.updatePost.id) {
       document.getElementById("updatePostSuccess").innerText = 'Update successful!'
     }
-    props.refetch()
+
+    // props.refetch()
   }
 
   const deletePost = async (_id) => {
@@ -194,8 +179,10 @@ export default function Single(props) {
     `,
     })
 
-    props.refetch()
+    // props.refetch()
   }
+
+  console.log(post)
 
   if (post === 0) {
     return <h3>Loading...</h3>
@@ -241,7 +228,7 @@ export default function Single(props) {
           />
           <button className={styles.btn} onClick={() => updatePost(post.id)}>Submit</button>
           <button onClick={() => setShowConfirmDelete(!showConfirmDelete)} className={styles.deleteBtn}>Delete post</button>
-          <div Style={`display: ${showConfirmDelete ? 'block' : 'none'}`}>
+          <div style={{display: `${showConfirmDelete ? 'block' : 'none'}`}}>
             <p>Are you sure?</p>
             <button className={styles.confirmDeleteYes} onClick={() => deletePost(post.id)}>Yes</button>
             <button onClick={() => setShowConfirmDelete(!showConfirmDelete)} className={styles.confirmDeleteNo}>No</button>
