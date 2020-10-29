@@ -29,7 +29,7 @@ export default function Posts(props) {
 		}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
 	}
 
-	const { loading, error, data, refetch } = useQuery(GET_POSTS(19, `"${page}"`))
+	const { loading, error, data } = useQuery(GET_POSTS(19, `"${page}"`))
 
 	if (error) console.log(error)
 
