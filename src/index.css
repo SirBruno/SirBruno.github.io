@@ -28,14 +28,15 @@ body {
   color: #fff;
   padding: 10px 20px;
   height: 60px;
-  box-shadow: 0 0 10px rgba(0,0,0,.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
   position: relative;
 }
 
 .header:after {
   content: '';
   height: 3px;
-  background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet); /* Standard syntax (must be last) */
+  background: linear-gradient(to right, orange, yellow, green, cyan, blue, violet);
+  /* Standard syntax (must be last) */
   display: block;
   position: absolute;
   width: 100%;
@@ -44,6 +45,21 @@ body {
 
 .headerUserArea {
   text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.logoutBtn {
+  color: #333;
+  margin-left: 10px;
+  font-size: 20px;
+  transition: .3s;
+}
+
+.logoutBtn:hover {
+  color: #fff;
+  transition: .3s;
 }
 
 .headerUserArea p {
@@ -89,6 +105,10 @@ body {
 }
 
 @keyframes fadein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
