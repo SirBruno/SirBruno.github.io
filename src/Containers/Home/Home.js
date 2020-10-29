@@ -53,18 +53,19 @@ export default function Home() {
                 <Link to="/login">Login</Link>
               </nav>
               {user != null ? <div className="headerUserArea">
-                <div className="loggedInUser">
-                  <p>Logged in as</p>
-                  <a href={
-                    (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ?
+                <div>
+                  <div className="loggedInUser">
+                    <p>Logged in as</p>
+                  </div>
+                  <div className="username">
+                    <p>{user.nickname}</p>
+                  </div>
+                </div>
+                <a href={
+                  (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ?
                     "https://archetypeofficial.herokuapp.com/logout?redir=http://localhost:3000/" :
                     "https://archetypeofficial.herokuapp.com/logout?redir=https://archetype-fe.vercel.app/"
-                  }>Logout</a>
-                </div>
-                <div className="username">
-                  <p>{user.nickname}</p>
-                </div>
-                <div></div>
+                }><i class="fas fa-sign-out-alt logoutBtn"></i></a>
               </div> : <div className="headerUserArea">
                   <div className="username">
                     <p>Not logged in</p>
