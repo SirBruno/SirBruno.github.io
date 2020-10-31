@@ -6,7 +6,7 @@ import Home from './Containers/Home/Home'
 
 import './index.css';
 
-const uri = 'https://archetypeofficial.herokuapp.com/graphql';
+const uri = 'http://localhost:4000/graphql';
 const client = new ApolloClient({ uri });
 
 function App() {

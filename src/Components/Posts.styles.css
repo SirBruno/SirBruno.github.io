@@ -191,3 +191,65 @@ img {
 .loadSpinner div {
   margin: 0 auto;
 }
+
+.postCategories {
+  display: grid;
+  position: relative;
+  grid-template-columns: repeat( auto-fit, minmax(150px, 1fr));
+  background: #191919;
+  padding: 50px 20px 0 20px;
+}
+
+.categoryToggle {
+  color: #fff;
+  border: none;
+  outline: none;
+  background: #fff;
+  font-family: 'Fira Sans', sans-serif;
+  padding: 20px;
+  border-radius: 100px;
+  margin: 0 10px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  transition: .3s;
+  opacity: .5;
+}
+
+.categoryToggle:hover {
+  opacity: 1;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.categoryToggle:nth-child(1) {
+  background: linear-gradient(to right, #1510F0, #1B76FF);
+}
+
+.categoryToggle:nth-child(2) {
+  background: linear-gradient(to right, #94090D, #FF1D23);
+}
+
+.categoryToggle:nth-child(3) {
+  background: linear-gradient(to right, #360259, #9C27B0);
+}
+
+.categoryToggle:nth-child(4) {
+  background: linear-gradient(to right, #766402, #FFD600);
+}
+
+.categoryToggle:nth-child(5) {
+  background: linear-gradient(to right, #2A2C2B, #607D8B);
+}
+
+.categoryToggle:nth-child(6) {
+  background: linear-gradient(to right, #33691E, #96CA2D);
+}
+
+.noPostsFound {
+  text-align: center;
+  color: #fff;
+  height: 50vh;
+  align-items: center;
+  display: grid;
+}

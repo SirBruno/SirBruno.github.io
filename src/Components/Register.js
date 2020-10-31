@@ -11,7 +11,7 @@ export default function Register() {
   const register = () => {
     axios({
       method: 'post',
-      url: 'https://archetypeofficial.herokuapp.com/register',
+      url: 'http://localhost:4000/register',
       headers: {},
       data: {
         username: userEmail.current.value,
