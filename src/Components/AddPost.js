@@ -31,7 +31,7 @@ export default function AddPost(props) {
   const dataPostTags = React.createRef();
 
   if (props.user == null) {
-    axios.get('https://archetypeofficial.herokuapp.com/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
   }
 
   const addPost = async () => {

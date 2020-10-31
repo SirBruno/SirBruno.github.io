@@ -14,37 +14,82 @@ export default function Posts(props) {
 	const [pageNum, setPageNum] = useState(null)
 	const [postLength, setPostLength] = useState(null)
 	const [lastPage, setLastPage] = useState(null)
+	const [postCategory, setPostCategory] = useState(false)
+	const [categoryToggle, setCategoryToggle] = useState(false)
+	const [categories, setCategories] = useState(null)
 	const client = useApolloClient();
 
-	if (postLength === null) {
+	if (props.user == null) {
+		axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+	}
+
+	if (categories === null) {
 		client.query({
 			query: gql`
-      query posts {
-        posts (pageSize: 999999999) {
-          hasMore
-					cursor
-					posts {
-						id
+			query categories {
+				categories {
+					id
+					categoryTitle
+				}
+			}
+	`,
+		}).then(x => setCategories(x.data.categories))
+	}
+
+	if (postCategory === false) {
+		client.query({
+			query: gql`
+				query posts {
+					posts (
+						pageSize: 1073741824
+					) {
+						hasMore
+						cursor
+						posts {
+							id
+						}
 					}
-        }
-      }
-  `,
+				}
+		`,
+		}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
+	} else {
+		console.log('entered')
+		client.query({
+			variables: {
+				category: postCategory
+			},
+			query: gql`
+				query posts ($category: String) {
+					posts (
+						pageSize: 1073741824,
+						category: $category
+					) {
+						hasMore
+						cursor
+						posts {
+							id
+						}
+					}
+				}
+		`,
 		}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
 	}
 
-	const { loading, error, data } = useQuery(GET_POSTS(19, `"${page}"`))
+	const { loading, error, data } = useQuery(GET_POSTS(19, `"${page}"`, postCategory === false ? null : `"${postCategory}"`), {fetchPolicy: "cache-and-network"})
 
 	if (error) console.log(error)
 
-	if (props.user == null) {
-		axios.get('https://archetypeofficial.herokuapp.com/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+	if (lastPage === null) {
+		setLastPage(Math.ceil(postLength / 19))
+	} else if ((lastPage !== null) && (postLength !== null)) {
+		console.log('Entered last page.')
+		console.log(postLength)
+		if (lastPage !== Math.ceil(postLength / 19)) {
+			setLastPage(Math.ceil(postLength / 19))
+		}
 	}
 
-	// console.log(data?.posts?.posts[0]?.postBody.match("<p>s*(.+?)s*</p>")[0]?.replace(/(<([^>]+)>)/ig, ""))
-
-	if(data && (lastPage === null) && (postLength !== null)) {
-		setLastPage(Math.ceil(postLength/19))
-	}
+	console.log('postLength: ' + postLength)
 
 	if ((page === 0) && pageNum !== 1) {
 		setPageNum(1)
@@ -58,16 +103,35 @@ export default function Posts(props) {
 		setPageNum(5)
 	}
 
+	console.log(data)
+
 	if (loading) {
 		return <div className="loadSpinner"><Loader
 			type="TailSpin"
 			color="#fff"
 			height={100}
 			width={100}
- 		/></div>
+		/></div>
 	} else if (data.posts.posts.length > 0) {
 		return (
 			<div>
+				<div className="postCategories">
+					{
+						categories !== null ? categories.map(c => <button style={{ opacity: `${postCategory === c.categoryTitle ? 1 : null}` }} key={c.id} className="categoryToggle" id={c.categoryTitle} onClick={() => {
+							if (categoryToggle === false) {
+								setPostCategory(c.categoryTitle)
+								setCategoryToggle(true)
+							} else {
+								if (postCategory === c.categoryTitle) {
+									setCategoryToggle(false)
+									setPostCategory(false)
+								} else {
+									setPostCategory(c.categoryTitle)
+								}
+							}
+						}}>#{c.categoryTitle}</button>) : null
+					}
+				</div>
 				<div className="postsOuter">
 					{data.posts.posts.map(posts =>
 						<div key={posts.id} className="postContainer">
@@ -101,29 +165,29 @@ export default function Posts(props) {
 							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 3)
 						}
 					}}><i class="fas fa-angle-left"></i></li>
-					<li id={page === 0 ? "current" : null} onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(0)}}>
+					<li id={page === 0 ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(0) }}>
 						1
 						</li>
 					{postLength > 19 ?
-						<li id={page === (19 * 1) ? "current" : null} onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 1)}}>
+						<li id={page === (19 * 1) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 1) }}>
 							2
 						</li>
 						: null
 					}
 					{postLength > (19 * 2) ?
-						<li id={page === (19 * 2) ? "current" : null} onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 2)}}>
+						<li id={page === (19 * 2) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 2) }}>
 							3
 						</li>
 						: null
 					}
 					{postLength > (19 * 3) ?
-						<li id={page === (19 * 3) ? "current" : null} onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 3)}}>
+						<li id={page === (19 * 3) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 3) }}>
 							4
 						</li>
 						: null
 					}
 					{postLength > (19 * 4) ?
-						<li id={page === (19 * 4) ? "current" : null} onClick={() => {window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 4)}}>
+						<li id={page === (19 * 4) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 4) }}>
 							5
 						</li>
 						: null
@@ -144,5 +208,27 @@ export default function Posts(props) {
 				</ul>
 			</div>
 		)
-	} else return null
+	} else return <div><div className="postCategories">
+		{
+			categories !== null ? categories.map(c => <button style={{ opacity: `${postCategory === c.categoryTitle ? 1 : null}` }} key={c.id} className="categoryToggle" id={c.categoryTitle} onClick={() => {
+				if (categoryToggle === false) {
+					setPostCategory(c.categoryTitle)
+					setCategoryToggle(true)
+				} else {
+					if (postCategory === c.categoryTitle) {
+						setCategoryToggle(false)
+						setPostCategory(false)
+					} else {
+						setPostCategory(c.categoryTitle)
+					}
+				}
+			}}>#{c.categoryTitle}</button>) : null
+		}
+	</div>
+		<div className="postsOuter">
+			<div className="noPostsFound">
+				<p>No posts found</p>
+			</div>
+		</div>
+	</div>
 }

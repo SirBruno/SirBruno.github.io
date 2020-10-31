@@ -16,7 +16,7 @@ import '../../index.css';
 import axios from 'axios'
 import logo from '../../assets/studium-logo.png'
 
-const uri = 'https://archetypeofficial.herokuapp.com/graphql';
+const uri = 'http://localhost:4000/graphql';
 const client = new ApolloClient({ uri });
 
 export default function Home() {
@@ -25,7 +25,7 @@ export default function Home() {
   const [user, setUser] = useState(null)
 
   if (user == null) {
-    axios.get('https://archetypeofficial.herokuapp.com/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
+    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
   }
 
   if (user) {
@@ -63,8 +63,8 @@ export default function Home() {
                 </div>
                 <a href={
                   (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ?
-                    "https://archetypeofficial.herokuapp.com/logout?redir=http://localhost:3000/" :
-                    "https://archetypeofficial.herokuapp.com/logout?redir=https://archetype-fe.vercel.app/"
+                    "http://localhost:4000/logout?redir=http://localhost:3000/" :
+                    "http://localhost:4000/logout?redir=https://archetype-fe.vercel.app/"
                 }><i class="fas fa-sign-out-alt logoutBtn"></i></a>
               </div> : <div className="headerUserArea">
                   <div className="username">
