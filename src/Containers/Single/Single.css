@@ -101,6 +101,7 @@ a.SingleEditPost:hover {
   justify-content: space-between;
   width: 100%;
   display: inline-flex;
+  margin-bottom: 10px;
 }
 
 .SingleComponent .SinglePostComment textarea {
@@ -155,7 +156,6 @@ a.SingleEditPost:hover {
   padding: 5px 15px;
   display: inline-block;
   border-radius: 100px;
-  margin-bottom: 10px;
   font-weight: 500;
   align-items: center;
   display: flex;
@@ -276,10 +276,16 @@ a.SingleEditPost:hover {
   font-size: 12px;
   transition: .3s;
   outline: none;
+  margin-right: 5px;
 }
 
 .toggleReportComment:hover {
   transition: .3s;
   color: #fff;
   cursor: pointer;
+}
+
+.commentBtnArea {
+  align-items: center;
+  display: flex;
 }

@@ -61,6 +61,11 @@ export default function Single(props) {
 
     getPost()
 
+    if (post.postComments?.length > 0) {
+      console.log("post.postComments?.length")
+      console.log(post.postComments?.length)
+    }
+
     if ((post.postComments?.length > 0) && comments == null) {
 
       const fetchComments = async () => {
@@ -219,8 +224,6 @@ export default function Single(props) {
 
   const addComment = async () => {
 
-    console.log(commentBody.current.value)
-
     const res = await client.mutate({
       variables: {
         userId: props.user?._id,
@@ -247,9 +250,9 @@ export default function Single(props) {
     if (comment.id == null) {
       document.getElementById("req-response").innerText = 'ERROR'
     } else {
-      document.getElementById("req-response").innerText = 'Comment added successfully!'
-      updatePost(post.id, comment.id)
-      console.log(comment)
+      // document.getElementById("req-response").innerText = 'Comment added successfully!'
+      await updatePost(post.id, comment.id)
+      // console.log(comment)
       setComments(comments == null ? [comment] : [...comments, comment])
       props.refetch()
     }
@@ -264,28 +267,20 @@ export default function Single(props) {
     }
 
     const res = await client.mutate({
-      variables: {
-        _id,
-      },
+      variables: { _id },
       mutation: gql`
         mutation deleteComment(
           $_id: String,
-        ){
+        ) {
           deleteComment(
             _id: $_id,
-          ) {
-            id
-          }
+          ) { id }
         }
-    `,
+    `
     })
 
-    // ------------------------------
-    let index = arr.indexOf(_id);
-    if (index > -1) {
-      arr.splice(index, 1);
-    }
-    // ------------------------------
+    let index = arr.indexOf(_id)
+    if (index > -1) arr.splice(index, 1)
 
     const postRes = await client.mutate({
       variables: {
@@ -300,14 +295,25 @@ export default function Single(props) {
           updatePost(
             _id: $_id,
             postComments: $postComments
-          ) {
-            id
-          }
+          ) { id }
         }
-    `,
+    `
     })
 
+    console.log("res.data.deleteComment.id")
+    console.log(res.data.deleteComment.id)
+    console.log("postRes.data.updatePost.id")
+    console.log(postRes.data.updatePost.id)
+
     if (res.data.deleteComment.id && postRes.data.updatePost.id) {
+      let filteredArr = comments.filter(function (obj) {
+        return obj.id !== _id;
+      })
+
+      console.log("filteredArr")
+      console.log(filteredArr)
+
+      setComments(filteredArr)
       console.log('Comment deleted.')
       document.getElementById("SingleComments").removeChild(document.getElementById(_id))
     }
@@ -391,9 +397,8 @@ export default function Single(props) {
     props.refetch()
   }
 
-  if (comments) {
-    console.log(comments)
-  }
+  console.log("comments")
+  console.log(comments)
 
   const toggleReportPostArea = () => {
     setReportPostArea(!reportPostArea)
@@ -460,16 +465,27 @@ export default function Single(props) {
           <p>Comments</p>
         </div>
         <div>
-          <textarea className="SinglePostComment" ref={commentBody}></textarea>
-          <button className="SinglePostBtn" onClick={() => addComment()}>Submit</button>
-          <p id="req-response"></p>
+          {
+            props.user?._id ?
+              <div className="commentAddBlock">
+                <textarea className="SinglePostComment" ref={commentBody}></textarea>
+                <button className="SinglePostBtn" onClick={() => addComment()}>Submit</button>
+                <p id="req-response"></p>
+              </div>
+            :
+            <div>
+              <textarea className="SinglePostComment" disabled>Login to comment.</textarea>
+              <br />
+              <br />
+            </div>
+          }
           <div id="SingleComments" className="SingleComments">{
             comments != null ? comments.reverse().map(x =>
-              <div>
-                <div id={x.id} key={x.id} className="SinglePostComment">
+              <div id={x.id} key={x.id}>
+                <div className="SinglePostComment">
                   <div className="SinglePostCommentTop">
                     <span className="SingleCommentUserId">{x.userId}</span>
-                    <div>
+                    <div className="commentBtnArea">
                       {props.user?._id ?
                         <span><button className="toggleReportComment" onClick={() => toggleReportComment(`comment${x.id}`)}>Report comment</button></span>
                         : null}

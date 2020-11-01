@@ -7,14 +7,15 @@ import GET_POSTS from '../Queries/GET_DATA'
 import { useApolloClient } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import Loader from 'react-loader-spinner'
+import ReactHtmlParser from 'react-html-parser';
 
 export default function Posts(props) {
 
-	const [page, setPage] = useState(0)
+	// const [page, setPage] = useState(0)
 	const [pageNum, setPageNum] = useState(null)
-	const [postLength, setPostLength] = useState(null)
+	// const [postLength, setPostLength] = useState(null)
 	const [lastPage, setLastPage] = useState(null)
-	const [postCategory, setPostCategory] = useState(false)
+	// const [postCategory, setPostCategory] = useState(false)
 	const [categoryToggle, setCategoryToggle] = useState(false)
 	const [categories, setCategories] = useState(null)
 	const client = useApolloClient();
@@ -36,111 +37,111 @@ export default function Posts(props) {
 		}).then(x => setCategories(x.data.categories))
 	}
 
-	if (postCategory === false) {
-		client.query({
-			query: gql`
-				query posts {
-					posts (
-						pageSize: 1073741824
-					) {
-						hasMore
-						cursor
-						posts {
-							id
-						}
-					}
-				}
-		`,
-		}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
-	} else {
-		console.log('entered')
-		client.query({
-			variables: {
-				category: postCategory
-			},
-			query: gql`
-				query posts ($category: String) {
-					posts (
-						pageSize: 1073741824,
-						category: $category
-					) {
-						hasMore
-						cursor
-						posts {
-							id
-						}
-					}
-				}
-		`,
-		}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
-	}
+	// if (postCategory === false) {
+	// 	client.query({
+	// 		query: gql`
+	// 			query posts {
+	// 				posts (
+	// 					pageSize: 1073741824
+	// 				) {
+	// 					hasMore
+	// 					cursor
+	// 					posts {
+	// 						id
+	// 					}
+	// 				}
+	// 			}
+	// 	`,
+	// 	}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
+	// } else {
+	// 	console.log('entered')
+	// 	client.query({
+	// 		variables: {
+	// 			category: postCategory
+	// 		},
+	// 		query: gql`
+	// 			query posts ($category: String) {
+	// 				posts (
+	// 					pageSize: 1073741824,
+	// 					category: $category
+	// 				) {
+	// 					hasMore
+	// 					cursor
+	// 					posts {
+	// 						id
+	// 					}
+	// 				}
+	// 			}
+	// 	`,
+	// 	}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
+	// }
 
-	const { loading, error, data } = useQuery(GET_POSTS(19, `"${page}"`, postCategory === false ? null : `"${postCategory}"`), {fetchPolicy: "cache-and-network"})
+	// const { loading, error, data, refetch } = useQuery(GET_POSTS(19, `"${page}"`, postCategory === false ? null : `"${postCategory}"`), {fetchPolicy: "cache-and-network"})
 
-	if (error) console.log(error)
+	// if (error) console.log(error)
 
 	if (lastPage === null) {
-		setLastPage(Math.ceil(postLength / 19))
-	} else if ((lastPage !== null) && (postLength !== null)) {
+		setLastPage(Math.ceil(props.postLength / 19))
+	} else if ((lastPage !== null) && (props.postLength !== null)) {
 		console.log('Entered last page.')
-		console.log(postLength)
-		if (lastPage !== Math.ceil(postLength / 19)) {
-			setLastPage(Math.ceil(postLength / 19))
+		console.log(props.postLength)
+		if (lastPage !== Math.ceil(props.postLength / 19)) {
+			setLastPage(Math.ceil(props.postLength / 19))
 		}
 	}
 
-	console.log('postLength: ' + postLength)
+	console.log('postLength: ' + props.postLength)
 
-	if ((page === 0) && pageNum !== 1) {
+	if ((props.page === 0) && pageNum !== 1) {
 		setPageNum(1)
-	} else if ((page === (19 * 1)) && pageNum !== 2) {
+	} else if ((props.page === (19 * 1)) && pageNum !== 2) {
 		setPageNum(2)
-	} else if ((page === (19 * 2)) && pageNum !== 3) {
+	} else if ((props.page === (19 * 2)) && pageNum !== 3) {
 		setPageNum(3)
-	} else if ((page === (19 * 3)) && pageNum !== 4) {
+	} else if ((props.page === (19 * 3)) && pageNum !== 4) {
 		setPageNum(4)
-	} else if ((page === (19 * 4)) && pageNum !== 5) {
+	} else if ((props.page === (19 * 4)) && pageNum !== 5) {
 		setPageNum(5)
 	}
 
-	console.log(data)
+	console.log(props.data)
 
-	if (loading) {
+	if (props.loading) {
 		return <div className="loadSpinner"><Loader
 			type="TailSpin"
 			color="#fff"
 			height={100}
 			width={100}
 		/></div>
-	} else if (data.posts.posts.length > 0) {
+	} else if (props.data.posts.posts.length > 0) {
 		return (
 			<div>
 				<div className="postCategories">
 					{
-						categories !== null ? categories.map(c => <button style={{ opacity: `${postCategory === c.categoryTitle ? 1 : null}` }} key={c.id} className="categoryToggle" id={c.categoryTitle} onClick={() => {
+						categories !== null ? categories.map(c => c.categoryTitle !== "All" ? <button style={{ opacity: `${props.postCategory === c.categoryTitle ? 1 : null}` }} key={c.id} className="categoryToggle" id={c.categoryTitle} onClick={() => {
 							if (categoryToggle === false) {
-								setPostCategory(c.categoryTitle)
+								props.setPostCategory(c.categoryTitle)
 								setCategoryToggle(true)
 							} else {
-								if (postCategory === c.categoryTitle) {
+								if (props.postCategory === c.categoryTitle) {
 									setCategoryToggle(false)
-									setPostCategory(false)
+									props.setPostCategory(false)
 								} else {
-									setPostCategory(c.categoryTitle)
+									props.setPostCategory(c.categoryTitle)
 								}
 							}
-						}}>#{c.categoryTitle}</button>) : null
+						}}>#{c.categoryTitle}</button> : null) : null
 					}
 				</div>
 				<div className="postsOuter">
-					{data.posts.posts.map(posts =>
+					{props.data.posts.posts.map(posts =>
 						<div key={posts.id} className="postContainer">
 							<img src={posts.postImageURL ? posts.postImageURL : imgPlaceholder} alt="no img found" />
 							<div className="postInfo">
 								<a id="postTitle" href={`/post/${posts.id}`}>{posts.postTitle}</a>
 								<p>{
 									// posts.postBody.match("<p>s*(.+?)s*</p>")[0].replace(/(<([^>]+)>)/ig, "")
-									posts.postBody?.match("<p>s*(.+?)s*</p>") ? posts.postBody.match("<p>s*(.+?)s*</p>")[0].replace(/(<([^>]+)>)/ig, "")
+									posts.postBody?.match("<p>s*(.+?)s*</p>") ? ReactHtmlParser(posts.postBody.match("<p>s*(.+?)s*</p>")[0].replace(/(<([^>]+)>)/ig, ""))
 										: posts.postBody.replace(/(<([^>]+)>)/ig, "")
 								}</p>
 								<div className="postMeta">
@@ -152,42 +153,42 @@ export default function Posts(props) {
 				</div>
 				<ul className="postPagePagination">
 					{/* postLength */}
-					<li id={page === 0 ? "current" : null} onClick={() => {
-						if (page === 0) {
+					<li id={props.page === 0 ? "current" : null} onClick={() => {
+						if (props.page === 0) {
 							return null
-						} else if (page === (19 * 1)) {
-							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(0)
-						} else if (page === (19 * 2)) {
-							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 1)
-						} else if (page === (19 * 3)) {
-							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 2)
-						} else if (page === (19 * 4)) {
-							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 3)
+						} else if (props.page === (19 * 1)) {
+							window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(0)
+						} else if (props.page === (19 * 2)) {
+							window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 1)
+						} else if (props.page === (19 * 3)) {
+							window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 2)
+						} else if (props.page === (19 * 4)) {
+							window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 3)
 						}
 					}}><i class="fas fa-angle-left"></i></li>
-					<li id={page === 0 ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(0) }}>
+					<li id={props.page === 0 ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(0) }}>
 						1
 						</li>
-					{postLength > 19 ?
-						<li id={page === (19 * 1) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 1) }}>
+					{props.postLength > 19 ?
+						<li id={props.page === (19 * 1) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 1) }}>
 							2
 						</li>
 						: null
 					}
-					{postLength > (19 * 2) ?
-						<li id={page === (19 * 2) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 2) }}>
+					{props.postLength > (19 * 2) ?
+						<li id={props.page === (19 * 2) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 2) }}>
 							3
 						</li>
 						: null
 					}
-					{postLength > (19 * 3) ?
-						<li id={page === (19 * 3) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 3) }}>
+					{props.postLength > (19 * 3) ?
+						<li id={props.page === (19 * 3) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 3) }}>
 							4
 						</li>
 						: null
 					}
-					{postLength > (19 * 4) ?
-						<li id={page === (19 * 4) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 4) }}>
+					{props.postLength > (19 * 4) ?
+						<li id={props.page === (19 * 4) ? "current" : null} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 4) }}>
 							5
 						</li>
 						: null
@@ -195,14 +196,14 @@ export default function Posts(props) {
 					<li id={pageNum === lastPage ? "current" : null} onClick={() => {
 						if (pageNum === lastPage) {
 							return null
-						} else if (page === 0) {
-							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 1)
-						} else if (page === (19 * 1)) {
-							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 2)
-						} else if (page === (19 * 2)) {
-							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 3)
-						} else if (page === (19 * 3)) {
-							window.scrollTo({ top: 0, behavior: 'smooth' }); setPage(19 * 4)
+						} else if (props.page === 0) {
+							window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 1)
+						} else if (props.page === (19 * 1)) {
+							window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 2)
+						} else if (props.page === (19 * 2)) {
+							window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 3)
+						} else if (props.page === (19 * 3)) {
+							window.scrollTo({ top: 0, behavior: 'smooth' }); props.setPage(19 * 4)
 						}
 					}}><i class="fas fa-angle-right"></i></li>
 				</ul>
@@ -210,16 +211,16 @@ export default function Posts(props) {
 		)
 	} else return <div><div className="postCategories">
 		{
-			categories !== null ? categories.map(c => <button style={{ opacity: `${postCategory === c.categoryTitle ? 1 : null}` }} key={c.id} className="categoryToggle" id={c.categoryTitle} onClick={() => {
+			categories !== null ? categories.map(c => <button style={{ opacity: `${props.postCategory === c.categoryTitle ? 1 : null}` }} key={c.id} className="categoryToggle" id={c.categoryTitle} onClick={() => {
 				if (categoryToggle === false) {
-					setPostCategory(c.categoryTitle)
+					props.setPostCategory(c.categoryTitle)
 					setCategoryToggle(true)
 				} else {
-					if (postCategory === c.categoryTitle) {
+					if (props.postCategory === c.categoryTitle) {
 						setCategoryToggle(false)
-						setPostCategory(false)
+						props.setPostCategory(false)
 					} else {
-						setPostCategory(c.categoryTitle)
+						props.setPostCategory(c.categoryTitle)
 					}
 				}
 			}}>#{c.categoryTitle}</button>) : null

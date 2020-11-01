@@ -10,11 +10,12 @@ import Posts from '../../Components/Posts'
 import Footer from '../../Components/Footer'
 import Register from '../../Components/Register'
 import SingleProfile from '../Single/SingleProfile'
-// import { useQuery } from '@apollo/react-hooks'
-// import GET_POSTS from '../../Queries/GET_DATA'
+import { useQuery } from '@apollo/react-hooks'
+import GET_POSTS from '../../Queries/GET_DATA'
 import '../../index.css';
 import axios from 'axios'
 import logo from '../../assets/studium-logo.png'
+import gql from 'graphql-tag'
 
 const uri = 'http://localhost:4000/graphql';
 const client = new ApolloClient({ uri });
@@ -23,16 +24,60 @@ export default function Home() {
 
   const [posts, setPosts] = useState([])
   const [user, setUser] = useState(null)
+  const [page, setPage] = useState(0)
+	const [pageNum, setPageNum] = useState(null)
+	const [postLength, setPostLength] = useState(null)
+	const [lastPage, setLastPage] = useState(null)
+	const [postCategory, setPostCategory] = useState(false)
+	const [categoryToggle, setCategoryToggle] = useState(false)
+	const [categories, setCategories] = useState(null)
 
   if (user == null) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
   }
 
-  if (user) {
-    console.log(user._id)
-  }
+  if (postCategory === false) {
+		client.query({
+			query: gql`
+				query posts {
+					posts (
+						pageSize: 1073741824
+					) {
+						hasMore
+						cursor
+						posts {
+							id
+						}
+					}
+				}
+		`,
+		}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
+	} else {
+		console.log('entered')
+		client.query({
+			variables: {
+				category: postCategory
+			},
+			query: gql`
+				query posts ($category: String) {
+					posts (
+						pageSize: 1073741824,
+						category: $category
+					) {
+						hasMore
+						cursor
+						posts {
+							id
+						}
+					}
+				}
+		`,
+		}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
+	}
 
-  // const { loading, error, data, refetch } = useQuery(GET_POSTS(19));
+  const { loading, error, data, refetch } = useQuery(GET_POSTS(19, `"${page}"`, postCategory === false ? null : `"${postCategory}"`), {fetchPolicy: "cache-and-network"})
+
+	if (error) console.log(error)
 
   // if (error) console.log(error)
 
@@ -65,7 +110,7 @@ export default function Home() {
                   (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ?
                     "http://localhost:4000/logout?redir=http://localhost:3000/" :
                     "http://localhost:4000/logout?redir=https://archetype-fe.vercel.app/"
-                }><i class="fas fa-sign-out-alt logoutBtn"></i></a>
+                }><i className="fas fa-sign-out-alt logoutBtn"></i></a>
               </div> : <div className="headerUserArea">
                   <div className="username">
                     <p>Not logged in</p>
@@ -84,7 +129,7 @@ export default function Home() {
                 <AddPost setUser={setUser} user={user} setPosts={setPosts} />
               </Route>
               <Route path="/post">
-                <Post setUser={setUser} user={user} setPosts={setPosts} />
+                <Post setUser={setUser} user={user} setPosts={setPosts} refetch={refetch} />
               </Route>
               <Route path="/singleprofile">
                 <SingleProfile setUser={setUser} user={user} setPosts={setPosts} />
@@ -93,7 +138,7 @@ export default function Home() {
                 <Edit setUser={setUser} user={user} setPosts={setPosts} />
               </Route>
               <Route path="/">
-                <Posts posts={posts} setPosts={setPosts} client={client} setUser={setUser} user={user} />
+                <Posts postCategory={postCategory} setPostCategory={setPostCategory} page={page} setPage={setPage} postLength={postLength} loading={loading} data={data} posts={posts} setPosts={setPosts} client={client} setUser={setUser} user={user} />
               </Route>
             </Switch>
             <Footer />

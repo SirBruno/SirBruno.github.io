@@ -8,6 +8,7 @@ import styles from './AddPost.module.css'
 export default function AddPost(props) {
 
   const [postBody, setpostBody] = useState(null)
+  const [categories, setCategories] = useState(null)
 
   const handleEditorChange = (e) => {
     setpostBody(e.target.getContent());
@@ -29,6 +30,22 @@ export default function AddPost(props) {
   const dataPostVisibility = React.createRef();
   const dataPostImageURL = React.createRef();
   const dataPostTags = React.createRef();
+
+  if (categories === null) {
+    client.query({
+      query: gql`
+			query categories {
+				categories {
+					id
+					categoryTitle
+          categoryPosts
+				}
+			}
+	`,
+    }).then(x => setCategories(x.data.categories))
+  }
+
+  console.log(categories)
 
   if (props.user == null) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
@@ -134,6 +151,36 @@ export default function AddPost(props) {
     `,
     })
 
+    // ##########################################################
+    // ##########################################################
+    var data = categories
+    var empIds = [dataCategoryId.current.value]
+    var filteredArray = data.filter(function (itm) {
+      return empIds.indexOf(itm.categoryTitle) > -1;
+    })
+
+    await client.mutate({
+      variables: {
+        _id: filteredArray[0].id,
+        categoryPosts: [...filteredArray[0].categoryPosts, res.data.addPost.id]
+      },
+      mutation: gql`
+        mutation updateCategory(
+          $_id: String,
+          $categoryPosts: [String]
+        ){
+          updateCategory(
+            _id: $_id,
+            categoryPosts: $categoryPosts
+          ) {
+            id
+          }
+        }
+    `,
+    }).then(x => console.log(x))
+    // ##########################################################
+    // ##########################################################
+
     console.log("88888888888888888888888888888888888")
     console.log(resUser.data.updateUser)
 
@@ -143,7 +190,6 @@ export default function AddPost(props) {
     } else {
       document.getElementById("req-response").innerText = 'Post added successfully!'
       console.log(props.posts)
-      props.refetch()
     }
   }
 
@@ -154,7 +200,14 @@ export default function AddPost(props) {
           ? <p>You're not logged in.</p>
           : <div className={styles.contentArea}>
             <input className={styles.input} ref={dataTitle} placeholder="Title" />
-            <input className={styles.input} ref={dataCategoryId} placeholder="Category Id" />
+            <div>
+              <p className={styles.categoryHelpText}>Choose a category</p>
+              <select ref={dataCategoryId} name="categoryId" className={styles.categoryIdSelector}>
+                {
+                  categories !== null ? categories.map(c => <option selected={c.categoryTitle === "All" ? "selected" : null} value={c.categoryTitle}>{c.categoryTitle}</option>) : null
+                }
+              </select>
+            </div>
             <input className={styles.input} ref={dataPostStatus} placeholder="Post Status" />
             <input className={styles.input} ref={dataPostVisibility} placeholder="Post Visibility" />
             <input className={styles.input} ref={dataPostImageURL} placeholder="Post image" />
