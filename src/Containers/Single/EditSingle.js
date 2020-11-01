@@ -18,6 +18,20 @@ export default function Single(props) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const [postBody, setpostBody] = useState(null)
+  const [categories, setCategories] = useState(null)
+
+  if (categories === null) {
+    client.query({
+      query: gql`
+			query categories {
+				categories {
+					id
+					categoryTitle
+				}
+			}
+	`,
+    }).then(x => setCategories(x.data.categories))
+  }
 
   const handleEditorChange = (e) => {
     setpostBody(e.target.getContent());
@@ -194,7 +208,15 @@ export default function Single(props) {
             <input className={styles.input} ref={dataTitle} defaultValue={post.postTitle} />
           </label>
           <label className={styles.label}>Category
-            <input className={styles.input} ref={categoryId} defaultValue={post.categoryId} />
+          <div>
+              <select ref={categoryId} name="categoryId" className={styles.categoryIdSelector}>
+                <option selected={post.categoryId === "All" ? "selected" : null} value="All">All</option>
+                {
+                  categories !== null ? categories.map(c => <option selected={post.categoryId === c.categoryTitle ? "selected" : null} value={c.categoryTitle}>{c.categoryTitle}</option>) : null
+                }
+              </select>
+            </div>
+            {/* <input className={styles.input} ref={categoryId} defaultValue={post.categoryId} /> */}
           </label>
           <label className={styles.label}>Status
             <input className={styles.input} ref={postStatus} defaultValue={post.postStatus} />
@@ -228,7 +250,7 @@ export default function Single(props) {
           />
           <button className={styles.btn} onClick={() => updatePost(post.id)}>Submit</button>
           <button onClick={() => setShowConfirmDelete(!showConfirmDelete)} className={styles.deleteBtn}>Delete post</button>
-          <div style={{display: `${showConfirmDelete ? 'block' : 'none'}`}}>
+          <div style={{ display: `${showConfirmDelete ? 'block' : 'none'}` }}>
             <p>Are you sure?</p>
             <button className={styles.confirmDeleteYes} onClick={() => deletePost(post.id)}>Yes</button>
             <button onClick={() => setShowConfirmDelete(!showConfirmDelete)} className={styles.confirmDeleteNo}>No</button>
