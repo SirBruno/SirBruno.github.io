@@ -209,23 +209,24 @@ export default function Posts(props) {
 				</ul>
 			</div>
 		)
-	} else return <div><div className="postCategories">
-		{
-			categories !== null ? categories.map(c => <button style={{ opacity: `${props.postCategory === c.categoryTitle ? 1 : null}` }} key={c.id} className="categoryToggle" id={c.categoryTitle} onClick={() => {
-				if (categoryToggle === false) {
-					props.setPostCategory(c.categoryTitle)
-					setCategoryToggle(true)
-				} else {
-					if (props.postCategory === c.categoryTitle) {
-						setCategoryToggle(false)
-						props.setPostCategory(false)
-					} else {
+	} else return <div>
+		<div className="postCategories">
+			{
+				categories !== null ? categories.map(c => c.categoryTitle !== "All" ? <button style={{ opacity: `${props.postCategory === c.categoryTitle ? 1 : null}` }} key={c.id} className="categoryToggle" id={c.categoryTitle} onClick={() => {
+					if (categoryToggle === false) {
 						props.setPostCategory(c.categoryTitle)
+						setCategoryToggle(true)
+					} else {
+						if (props.postCategory === c.categoryTitle) {
+							setCategoryToggle(false)
+							props.setPostCategory(false)
+						} else {
+							props.setPostCategory(c.categoryTitle)
+						}
 					}
-				}
-			}}>#{c.categoryTitle}</button>) : null
-		}
-	</div>
+				}}>#{c.categoryTitle}</button> : null) : null
+			}
+		</div>
 		<div className="postsOuter">
 			<div className="noPostsFound">
 				<p>No posts found</p>
