@@ -93,7 +93,7 @@ export default function Profile(props) {
     getExp()
   })
 
-  console.log(userPosts)
+  console.log(singleUser)
 
   const getRanking = (x) => {
     if (x < 5) {
