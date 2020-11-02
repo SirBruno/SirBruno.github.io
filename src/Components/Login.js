@@ -4,21 +4,25 @@ import styles from './Login.module.css'
 
 export default function (props) {
 
+  const URI = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ?
+    "http://localhost:4000" :
+    "https://archetypeofficial.herokuapp.com"
+
   const inputUsername = React.createRef();
   const inputPassword = React.createRef();
 
   if (props.user == null) {
-    axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+    axios.get(`${URI}/user`, { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
   }
 
   const userAuth = async () => {
-    const tryLoggin = await axios.get(`http://localhost:4000/login?username=${inputUsername.current.value}&password=${inputPassword.current.value}`, { withCredentials: true });
+    const tryLoggin = await axios.get(`${URI}/login?username=${inputUsername.current.value}&password=${inputPassword.current.value}`, { withCredentials: true });
 
     if (props.user == null) {
-      axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
+      axios.get(`${URI}/user`, { withCredentials: true }).then(res => res.data.user ? props.setUser(res.data.user) : null);
     }
 
-    if(tryLoggin.data === "Incorrect username and password combination!") {
+    if (tryLoggin.data === "Incorrect username and password combination!") {
       document.getElementById("errorMessage").innerHTML = `<p class="loginErrorMessage">${tryLoggin.data}</p>`;
     }
 
