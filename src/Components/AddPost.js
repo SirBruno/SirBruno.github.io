@@ -191,6 +191,8 @@ export default function AddPost(props) {
       document.getElementById("req-response").innerText = 'Post added successfully!'
       console.log(props.posts)
     }
+
+    props.refetch()
   }
 
   return (
