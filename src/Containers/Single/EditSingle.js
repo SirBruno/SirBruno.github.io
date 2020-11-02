@@ -136,7 +136,7 @@ export default function Single(props) {
       document.getElementById("updatePostSuccess").innerText = 'Update successful!'
     }
 
-    // props.refetch()
+    props.refetch()
   }
 
   const deletePost = async (_id) => {

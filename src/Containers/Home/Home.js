@@ -135,7 +135,7 @@ export default function Home() {
                 <SingleProfile setUser={setUser} user={user} setPosts={setPosts} />
               </Route>
               <Route path="/edit">
-                <Edit setUser={setUser} user={user} setPosts={setPosts} />
+                <Edit setUser={setUser} user={user} setPosts={setPosts} refetch={refetch} />
               </Route>
               <Route path="/">
                 <Posts postCategory={postCategory} setPostCategory={setPostCategory} page={page} setPage={setPage} postLength={postLength} loading={loading} data={data} posts={posts} setPosts={setPosts} client={client} setUser={setUser} user={user} />
