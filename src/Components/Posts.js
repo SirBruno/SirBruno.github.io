@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import './Posts.styles.css';
 import imgPlaceholder from '../assets/image-placeholder.jpg'
 import axios from 'axios'
-import { useQuery } from '@apollo/react-hooks'
-import GET_POSTS from '../Queries/GET_DATA'
 import { useApolloClient } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import Loader from 'react-loader-spinner'

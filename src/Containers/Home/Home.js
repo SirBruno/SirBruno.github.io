@@ -25,12 +25,8 @@ export default function Home() {
   const [posts, setPosts] = useState([])
   const [user, setUser] = useState(null)
   const [page, setPage] = useState(0)
-	const [pageNum, setPageNum] = useState(null)
 	const [postLength, setPostLength] = useState(null)
-	const [lastPage, setLastPage] = useState(null)
 	const [postCategory, setPostCategory] = useState(false)
-	const [categoryToggle, setCategoryToggle] = useState(false)
-	const [categories, setCategories] = useState(null)
 
   if (user == null) {
     axios.get('http://localhost:4000/user', { withCredentials: true }).then(res => res.data.user ? setUser(res.data.user) : null);
