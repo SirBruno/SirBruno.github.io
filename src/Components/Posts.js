@@ -9,11 +9,8 @@ import ReactHtmlParser from 'react-html-parser';
 
 export default function Posts(props) {
 
-	// const [page, setPage] = useState(0)
 	const [pageNum, setPageNum] = useState(null)
-	// const [postLength, setPostLength] = useState(null)
 	const [lastPage, setLastPage] = useState(null)
-	// const [postCategory, setPostCategory] = useState(false)
 	const [categoryToggle, setCategoryToggle] = useState(false)
 	const [categories, setCategories] = useState(null)
 	const client = useApolloClient();
@@ -35,60 +32,14 @@ export default function Posts(props) {
 		}).then(x => setCategories(x.data.categories))
 	}
 
-	// if (postCategory === false) {
-	// 	client.query({
-	// 		query: gql`
-	// 			query posts {
-	// 				posts (
-	// 					pageSize: 1073741824
-	// 				) {
-	// 					hasMore
-	// 					cursor
-	// 					posts {
-	// 						id
-	// 					}
-	// 				}
-	// 			}
-	// 	`,
-	// 	}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
-	// } else {
-	// 	console.log('entered')
-	// 	client.query({
-	// 		variables: {
-	// 			category: postCategory
-	// 		},
-	// 		query: gql`
-	// 			query posts ($category: String) {
-	// 				posts (
-	// 					pageSize: 1073741824,
-	// 					category: $category
-	// 				) {
-	// 					hasMore
-	// 					cursor
-	// 					posts {
-	// 						id
-	// 					}
-	// 				}
-	// 			}
-	// 	`,
-	// 	}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
-	// }
-
-	// const { loading, error, data, refetch } = useQuery(GET_POSTS(19, `"${page}"`, postCategory === false ? null : `"${postCategory}"`), {fetchPolicy: "cache-and-network"})
-
-	// if (error) console.log(error)
-
-	if (lastPage === null) {
-		setLastPage(Math.ceil(props.postLength / 19))
-	} else if ((lastPage !== null) && (props.postLength !== null)) {
+	if (lastPage === null) { setLastPage(Math.ceil(props.postLength / 19)) }
+	else if ((lastPage !== null) && (props.postLength !== null)) {
 		console.log('Entered last page.')
 		console.log(props.postLength)
-		if (lastPage !== Math.ceil(props.postLength / 19)) {
-			setLastPage(Math.ceil(props.postLength / 19))
-		}
+		if (lastPage !== Math.ceil(props.postLength / 19)) { setLastPage(Math.ceil(props.postLength / 19)) }
 	}
 
-	console.log('postLength: ' + props.postLength)
+	// console.log('postLength: ' + props.postLength)
 
 	if ((props.page === 0) && pageNum !== 1) {
 		setPageNum(1)
@@ -103,6 +54,8 @@ export default function Posts(props) {
 	}
 
 	console.log(props.data)
+	console.log('page: ' + pageNum)
+	console.log('props.page: ' + props.page)
 
 	if (props.loading) {
 		return <div className="loadSpinner"><Loader
@@ -120,12 +73,15 @@ export default function Posts(props) {
 							if (categoryToggle === false) {
 								props.setPostCategory(c.categoryTitle)
 								setCategoryToggle(true)
+								props.setPage(0)
 							} else {
 								if (props.postCategory === c.categoryTitle) {
 									setCategoryToggle(false)
 									props.setPostCategory(false)
+									props.setPage(0)
 								} else {
 									props.setPostCategory(c.categoryTitle)
+									props.setPage(0)
 								}
 							}
 						}}>#{c.categoryTitle}</button> : null) : null
