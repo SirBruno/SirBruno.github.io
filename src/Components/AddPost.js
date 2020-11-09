@@ -10,18 +10,11 @@ export default function AddPost(props) {
   const [postBody, setpostBody] = useState(null)
   const [categories, setCategories] = useState(null)
 
-  const handleEditorChange = (e) => {
-    setpostBody(e.target.getContent());
-  }
+  const handleEditorChange = (e) => { setpostBody(e.target.getContent()) }
 
-  console.log(
-    'Content was updated:',
-    postBody
-  );
+  console.log('Content was updated:', postBody );
 
-  let today = new Date();
-
-  today = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
+  // today = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
 
   const client = useApolloClient();
   const dataTitle = React.createRef();
@@ -63,8 +56,8 @@ export default function AddPost(props) {
         postVisibility: dataPostVisibility.current.value,
         postImageURL: dataPostImageURL.current.value,
         postTags: dataPostTags.current.value,
-        updatedAt: today,
-        createdAt: today,
+        updatedAt: new Date(),
+        createdAt: new Date(),
         postLikes: 0
       },
       mutation: gql`
@@ -192,7 +185,7 @@ export default function AddPost(props) {
       console.log(props.posts)
     }
 
-    props.refetch()
+    // props.refetch()
   }
 
   return (
