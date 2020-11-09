@@ -122,7 +122,7 @@ export default function Home() {
                 <Register setUser={setUser} user={user} />
               </Route>
               <Route path="/addpost">
-                <AddPost setUser={setUser} user={user} setPosts={setPosts} />
+                <AddPost setUser={setUser} user={user} setPosts={setPosts} refetch={refetch} />
               </Route>
               <Route path="/post">
                 <Post setUser={setUser} user={user} setPosts={setPosts} refetch={refetch} />

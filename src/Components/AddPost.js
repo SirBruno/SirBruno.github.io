@@ -119,7 +119,6 @@ export default function AddPost(props) {
   `,
     })
 
-    console.log("55555555555555555555555555")
     console.log(fetchUser.data.user.userPosts)
     console.log(res.data.addPost.id)
 
@@ -144,8 +143,6 @@ export default function AddPost(props) {
     `,
     })
 
-    // ##########################################################
-    // ##########################################################
     var data = categories
     var empIds = [dataCategoryId.current.value]
     var filteredArray = data.filter(function (itm) {
@@ -171,10 +168,7 @@ export default function AddPost(props) {
         }
     `,
     }).then(x => console.log(x))
-    // ##########################################################
-    // ##########################################################
 
-    console.log("88888888888888888888888888888888888")
     console.log(resUser.data.updateUser)
 
     const post = await res.data.addPost;
@@ -185,7 +179,7 @@ export default function AddPost(props) {
       console.log(props.posts)
     }
 
-    // props.refetch()
+    props.refetch()
   }
 
   return (
