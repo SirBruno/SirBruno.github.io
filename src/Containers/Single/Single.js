@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import axios from 'axios'
 import './Single.css'
 import ReactHtmlParser from 'react-html-parser';
+import Loader from 'react-loader-spinner'
 
 export default function Single(props) {
 
@@ -412,8 +413,40 @@ export default function Single(props) {
     }
   }
 
+  const getDate = (d) => {
+    var day, month, year;
+
+    let result = d.match("[0-9]{2}([-/ .])[0-9]{2}[-/ .][0-9]{4}");
+    if (null != result) {
+      let dateSplitted = result[0].split(result[1]);
+      day = dateSplitted[0];
+      month = dateSplitted[1];
+      year = dateSplitted[2];
+    }
+    result = d.match("[0-9]{4}([-/ .])[0-9]{2}[-/ .][0-9]{2}");
+    if (null != result) {
+      let dateSplitted = result[0].split(result[1]);
+      day = dateSplitted[2];
+      month = dateSplitted[1];
+      year = dateSplitted[0];
+    }
+
+    if (month > 12) {
+      let aux = day;
+      day = month;
+      month = aux;
+    }
+
+    return year + "/" + month + "/" + day;
+  }
+
   if (post === 0) {
-    return <h3>Loading...</h3>
+    return <div className="loadSpinner"><Loader
+      type="TailSpin"
+      color="#fff"
+      height={100}
+      width={100}
+    /></div>
   } else return (
     <div className="SingleComponent">
       <div className="singlePostContainer">
@@ -426,7 +459,7 @@ export default function Single(props) {
                 <a className="SingleEditPost" href={`/singleprofile/${post.userId}`}>{post.author}</a>
               </span></p>
               <br />
-              <i className="SingleMetaTitle">Date: <b>{post.createdAt}</b></i>
+              <i className="SingleMetaTitle">Date: <b>{getDate(post.createdAt)}</b></i>
               <i className="SingleMetaTitle">Category: <b>{post.categoryId}</b></i>
               <i className="SingleMetaTitle">Tags: <b>{post.postTags}</b></i>
               <i className="SingleMetaTitle">Likes: <b>{post.postLikes}</b></i>
@@ -472,12 +505,12 @@ export default function Single(props) {
                 <button className="SinglePostBtn" onClick={() => addComment()}>Submit</button>
                 <p id="req-response"></p>
               </div>
-            :
-            <div>
-              <textarea className="SinglePostComment" disabled>Login to comment.</textarea>
-              <br />
-              <br />
-            </div>
+              :
+              <div>
+                <textarea className="SinglePostComment" disabled>Login to comment.</textarea>
+                <br />
+                <br />
+              </div>
           }
           <div id="SingleComments" className="SingleComments">{
             comments != null ? comments.reverse().map(x =>
