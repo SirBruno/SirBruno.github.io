@@ -197,8 +197,8 @@ export default function AddPost(props) {
                 }
               </select>
             </div>
-            <input className={styles.input} ref={dataPostStatus} placeholder="Post Status" />
-            <input className={styles.input} ref={dataPostVisibility} placeholder="Post Visibility" />
+            <input className={styles.input} ref={dataPostStatus} value="Published" disabled placeholder="Post Status" />
+            <input className={styles.input} ref={dataPostVisibility} value="Public" disabled placeholder="Post Visibility" />
             <input className={styles.input} ref={dataPostImageURL} placeholder="Post image" />
             <input className={styles.input} ref={dataPostTags} placeholder="Tags" />
             <Editor
