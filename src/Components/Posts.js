@@ -89,7 +89,7 @@ export default function Posts(props) {
 				</div>
 				<div className="postsOuter">
 					{props.data.posts.posts.map(posts =>
-						<div key={posts.id} className="postContainer">
+						<div key={posts.id} className={`postContainer${pageNum === 1 ? ' highlighedPost' : ''}`}>
 							<img src={posts.postImageURL ? posts.postImageURL : imgPlaceholder} alt="no img found" />
 							<div className="postInfo">
 								<a id="postTitle" href={`/post/${posts.id}`}>{posts.postTitle}</a>

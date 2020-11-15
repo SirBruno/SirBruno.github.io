@@ -71,7 +71,7 @@ export default function Home() {
 		}).then(x => x.data.posts.posts.length > 0 ? setPostLength(x.data.posts.posts.length) : setPostLength(0))
 	}
 
-  const { loading, error, data, refetch } = useQuery(GET_POSTS(19, `"${page}"`, postCategory === false ? null : `"${postCategory}"`), {fetchPolicy: "cache-and-network"})
+  const { loading, error, data, refetch } = useQuery(GET_POSTS(page > 0 ? 20 : 19, `"${page}"`, postCategory === false ? null : `"${postCategory}"`), {fetchPolicy: "cache-and-network"})
 
 	if (error) console.log(error)
 
