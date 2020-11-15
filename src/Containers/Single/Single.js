@@ -316,7 +316,7 @@ export default function Single(props) {
 
       setComments(filteredArr)
       console.log('Comment deleted.')
-      document.getElementById("SingleComments").removeChild(document.getElementById(_id))
+      // document.getElementById("SingleComments").removeChild(document.getElementById(_id))
     }
 
     props.refetch()
