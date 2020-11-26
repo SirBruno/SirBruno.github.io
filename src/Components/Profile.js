@@ -76,7 +76,7 @@ export default function Profile(props) {
 
               // define o estado com o cálculo de exp do post a cada iteração
               setStuff(lel)
-              
+
               // define o estado como todos os posts do usuário, cortado pra no máximo 10
               setUserPosts(posts.slice(0, 10))
             }
@@ -109,6 +109,17 @@ export default function Profile(props) {
     } else return null
   }
 
+  let expBase = stuff * 20
+
+  let calc1 = (
+    Math.cbrt(
+      Math.sqrt(3) * Math.sqrt(
+        (243 * Math.pow(expBase, 2)) - (48600 * expBase) + 3680000) + (27 * expBase) - 2700
+    )
+  )
+
+  let calc2 = ((calc1 / Math.pow(30, 2 / 3)) - ((5 * Math.pow(10, 2 / 3)) / (Math.cbrt(3) * calc1))) + 2
+
   return (
     singleUser?.id ?
       <div className={styles.main}>
@@ -117,8 +128,8 @@ export default function Profile(props) {
             <img className={styles.userImageURL} src={singleUser?.userImageURL} alt="profile-pic" />
             <p className={styles.nickname}>{singleUser?.nickname}</p>
             <p className={styles.userDescription}>{singleUser?.userDescription}</p>
-            <p className={styles.userLevel}><span className={styles.meta}>Level:</span> {stuff * 1}</p>
-            <p className={styles.userExp}><span className={styles.meta}>Exp:</span> {stuff * 5000}</p>
+            <p className={styles.userLevel}><span className={styles.meta}>Level:</span> {Math.trunc(calc2)}</p>
+            <p className={styles.userExp}><span className={styles.meta}>Exp:</span> {expBase}</p>
             <p className={styles.userRanking}><span className={styles.meta}>Ranking:</span> {getRanking(stuff)}</p>
           </div>
           <div>
