@@ -11,7 +11,7 @@
     "@tinymce/tinymce-react": "^3.6.1",
     "apollo-boost": "^0.4.7",
     "audit": "0.0.6",
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "draft-js": "^0.11.7",
     "draft-js-plugins-editor": "^3.0.0",
     "draft-js-static-toolbar-plugin": "^3.0.1",
